@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البوابة الأكاديمية للطلاب | كلية العلوم</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #e2e2e2);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        .login-wrapper {
+            direction: ltr;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            position: relative;
+            width: 900px;
+            max-width: 100%;
+            height: 580px;
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+            .container h1 {
+                font-size: 34px;
+                margin: -10px 0;
+                font-weight: 800;
+                color: #1e3c72;
+            }
+
+            .container p {
+                font-size: 15px;
+                margin: 15px 0;
+                line-height: 1.6;
+                color: #666;
+            }
+
+        form {
+            width: 100%;
+            direction: rtl;
+        }
+
+        .form-box {
+            position: absolute;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            text-align: center;
+            padding: 40px;
+            z-index: 1;
+            transition: 0.6s ease-in-out 1.2s, visibility 0s 1s;
+        }
+
+        .container.active .form-box {
+            right: 50%;
+        }
+
+        .form-box.register {
+            visibility: hidden;
+        }
+
+        .container.active .form-box.register {
+            visibility: visible;
+        }
+
+        .container.active .form-box.login {
+            visibility: hidden;
+            transition-delay: 0s, 0s;
+        }
+
+        .input-box {
+            position: relative;
+            margin: 25px 0;
+        }
+
+            .input-box input {
+                width: 100%;
+                padding: 14px 45px 14px 20px;
+                background: #f0f3f8;
+                border-radius: 12px;
+                border: 2px solid transparent;
+                outline: none;
+                font-size: 15px;
+                color: #333;
+                font-weight: 600;
+                transition: 0.3s;
+            }
+
+                .input-box input:focus {
+                    border-color: #2a5298;
+                    background: #fff;
+                    box-shadow: 0 0 10px rgba(42, 82, 152, 0.15);
+                }
+
+                .input-box input::placeholder {
+                    color: #999;
+                    font-weight: 400;
+                }
+
+            .input-box i {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 20px;
+                color: #2a5298;
+            }
+
+        .btn {
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 17px;
+            color: #fff;
+            font-weight: 700;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+            .btn:hover {
+                background: linear-gradient(90deg, #2a5298, #1e3c72);
+                transform: translateY(-2px);
+            }
+
+        .toggle-box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+            /* تعديل: إضافة أنيميشن التدرج الحركي للأخضر والأبيض المدمج */
+            .toggle-box::before {
+                content: "";
+                position: absolute;
+                left: -250%;
+                width: 300%;
+                height: 100%;
+                background: linear-gradient(270deg, #128c7e, #25d366, #ffffff, #f0fdf4, #128c7e);
+                background-size: 400% 400%;
+                border-radius: 150px;
+                z-index: 2;
+                transition: 1.8s ease-in-out;
+                animation: gradient-move 12s ease infinite;
+            }
+
+        @keyframes gradient-move {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container.active .toggle-box::before {
+            left: 50%;
+        }
+
+        .toggle-panel {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            transition: 0.6s ease-in-out;
+            direction: rtl;
+            padding: 30px;
+            text-align: center;
+        }
+
+            .toggle-panel.toggle-left {
+                left: 0;
+                transition-delay: 1.2s;
+            }
+
+        .container.active .toggle-panel.toggle-left {
+            left: -50%;
+            transition-delay: 0.6s;
+        }
+
+        .toggle-panel.toggle-right {
+            right: -50%;
+            transition-delay: 0.6s;
+        }
+
+        .container.active .toggle-panel.toggle-right {
+            right: 0;
+            transition-delay: 1.2s;
+        }
+
+        .toggle-panel .btn {
+            width: 160px;
+            height: 46px;
+            background: transparent;
+            border: 2px solid #fff;
+            box-shadow: none;
+        }
+
+        /* تأثير الوهج الأبيض الجذاب للنص لضمان وضوحه تماماً */
+        .toggle-panel.toggle-right h1, .toggle-panel.toggle-right p {
+            color: #ffffff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+            animation: glowText 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #128c7e, 0 0 15px #128c7e;
+            }
+
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #25d366, 0 0 30px #25d366;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                height: auto;
+                min-height: 620px;
+                width: 100%;
+                border-radius: 20px;
+            }
+
+            .form-box {
+                bottom: 0;
+                width: 100%;
+                height: 75%;
+            }
+
+            .container.active .form-box {
+                right: 0;
+                bottom: 25%;
+            }
+
+            .toggle-box::before {
+                left: 0;
+                top: -270%;
+                width: 100%;
+                height: 300%;
+                border-radius: 20vw;
+            }
+
+            .container.active .toggle-box::before {
+                left: 0;
+                top: 75%;
+            }
+
+            .container.active .toggle-panel.toggle-left {
+                left: 0;
+                top: -25%;
+            }
+
+            .toggle-panel {
+                width: 100%;
+                height: 25%;
+                padding: 15px;
+            }
+
+                .toggle-panel h1 {
+                    font-size: 22px;
+                }
+
+                .toggle-panel.toggle-left {
+                    top: 0;
+                }
+
+                .toggle-panel.toggle-right {
+                    right: 0;
+                    bottom: -25%;
+                }
+
+            .container.active .toggle-panel.toggle-right {
+                bottom: 0;
+            }
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 850px;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 35px 30px;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-page {
+            display: none;
+        }
+
+            .dashboard-page.active {
+                display: block;
+            }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+            .dashboard-header h2 {
+                font-weight: 800;
+                font-size: 28px;
+                color: #1e3c72;
+            }
+
+        .profile-info {
+            text-align: center;
+            margin-bottom: 25px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1e3c72;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .profile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            border: 1px solid #818cf8;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #3730a3;
+        }
+
+        .details-text {
+            text-align: center;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .big-choice-card {
+            background: #f1f5f9;
+            border: 2px dashed #3b82f6;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+            .big-choice-card label {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 12px;
+                font-weight: 800;
+                font-size: 18px;
+                color: #1e293b;
+            }
+
+            .big-choice-card select, .big-choice-card input {
+                width: 100%;
+                padding: 16px 20px;
+                background: #ffffff;
+                border: 2px solid #cbd5e1;
+                border-radius: 14px;
+                color: #0f172a;
+                outline: none;
+                margin-bottom: 20px;
+                font-size: 17px;
+                font-weight: 700;
+                transition: 0.3s;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+
+                .big-choice-card select:focus, .big-choice-card input:focus {
+                    border-color: #2563eb;
+                    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+                }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .custom-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 18px 22px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+            .custom-checkbox.disabled {
+                opacity: 0.6;
+                pointer-events: none;
+            }
+
+            .custom-checkbox:hover {
+                background: #eff6ff;
+                border-color: #3b82f6;
+            }
+
+            .custom-checkbox input[type="checkbox"] {
+                display: none;
+            }
+
+        .checkmark {
+            width: 26px;
+            height: 26px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked + .checkmark {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+            .custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+                content: '\f00c';
+                font-family: 'FontAwesome';
+                color: white;
+                font-size: 15px;
+            }
+
+        .subject-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+            .subject-meta span {
+                background: #fff;
+                padding: 5px 10px;
+                border-radius: 8px;
+                border: 1px solid #bfdbfe;
+            }
+
+        .back-btn {
+            background: #64748b;
+            margin-top: 10px;
+        }
+
+            .back-btn:hover {
+                background: #475569;
+            }
+
+        #loader, #systemLoader {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .status-report-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #e2e8f0;
+        }
+
+        .subject-status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
+            font-weight: 700;
+        }
+
+        .subject-status-tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+            .subject-status-tag.accepted {
+                background: #dcfce7;
+                color: #15803d;
+            }
+
+            .subject-status-tag.rejected {
+                background: #fee2e2;
+                color: #b91c1c;
+            }
+
+            .subject-status-tag.pending {
+                background: #fef3c7;
+                color: #d97706;
+            }
+
+        /* أيقونة الدردشة العائمة المباشرة */
+        .live-chat-fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.45);
+            cursor: pointer;
+            z-index: 1000;
+            animation: livePulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+            .live-chat-fab:hover {
+                transform: scale(1.1) rotate(5deg);
+            }
+
+        .chat-badge-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: #ef4444;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: none;
+        }
+
+        /* شارات التضامن الفخري مع مصر وفلسطين */
+        .solidarity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes livePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 18px rgba(37, 211, 102, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* نافذة الدردشة الطافية */
+        .chat-floating-window {
+            position: fixed;
+            bottom: 105px;
+            left: 30px;
+            width: 360px;
+            max-width: calc(100vw - 40px);
+            height: 480px;
+            background: #efeae2;
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-floating-window.active {
+            display: flex;
+        }
+
+        .chat-header-float {
+            background: #075e54;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        .chat-body-float {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .msg-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-break: break-word;
+            position: relative;
+        }
+
+            .msg-bubble.student {
+                background: #dcf8c6;
+                align-self: flex-start;
+                color: #111;
+                border-bottom-left-radius: 2px;
+            }
+
+            .msg-bubble.admin {
+                background: #ffffff;
+                align-self: flex-end;
+                color: #111;
+                border-bottom-right-radius: 2px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+        .msg-time {
+            font-size: 10px;
+            color: #888;
+            display: block;
+            text-align: left;
+            margin-top: 4px;
+        }
+
+        .msg-status-tick {
+            position: absolute;
+            bottom: 4px;
+            left: 10px;
+            font-size: 12px;
+        }
+
+            .msg-status-tick.blue {
+                color: #34b7f1;
+            }
+
+            .msg-status-tick.gray {
+                color: #999;
+            }
+
+        .chat-footer-float {
+            padding: 10px;
+            background: #f0f0f0;
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #ddd;
+        }
+
+            .chat-footer-float input {
+                flex: 1;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 25px;
+                outline: none;
+                font-size: 14px;
+            }
+
+            .chat-footer-float button {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                background: #128c7e;
+                color: white;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+        /* نافذة تسجيل الدخول للدردشة */
+        .chat-isolated-login {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 30px;
+            background: #fff;
+        }
+
+            .chat-isolated-login h3 {
+                font-size: 18px;
+                font-weight: 800;
+                color: #075e54;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .chat-isolated-login p {
+                font-size: 13px;
+                color: #666;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .chat-isolated-login input {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #cbd5e1;
+                border-radius: 10px;
+                outline: none;
+                font-size: 14px;
+                margin-bottom: 12px;
+                text-align: center;
+            }
+
+            .chat-isolated-login button {
+                width: 100%;
+                padding: 12px;
+                background: #075e54;
+                color: #fff;
+                border: none;
+                border-radius: 10px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+                .chat-isolated-login button:hover {
+                    background: #128c7e;
+                }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            perspective: 1200px;
+        }
+
+            .modal-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 24px;
+            padding: 35px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            transform: rotateX(20deg) translateY(-50px);
+            transition: 0.4s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: rotateX(0deg) translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            color: #475569;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .modal-btn-error {
+            background: #ef4444;
+        }
+
+        .modal-btn-success {
+            background: #22c55e;
+        }
+
+        .modal-btn-warning {
+            background: #f59e0b;
+        }
+
+        /* ستايل لودر التثبيت المنقذ لمشكلة Reference Error */
+        #globalLoader {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            flex-direction: column;
+        }
+
+            #globalLoader i {
+                font-size: 40px;
+                color: #2563eb;
+                margin-bottom: 15px;
+                animation: spin 1s linear infinite;
+            }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- صندوق تحميل المتصفح المنقذ من أخطاء الاتصال والدردشة -->
+    <div id="globalLoader">
+        <i class="fa-solid fa-circle-notch"></i>
+        <h3 id="loaderText" style="font-weight: 700; color: #1e3c72;">جاري الاتصال...</h3>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="login-wrapper" id="loginWrapper">
+            <div class="container active" id="sliderContainer">
+
+                <div class="form-box register">
+                    <form onsubmit="event.preventDefault(); fetchAndVerifyStudent();">
+                        <div style="margin-bottom:15px;">
+                            <span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span>
+                        </div>
+                        <h1>تسجيل الدخول</h1>
+                        <p>أدخل بياناتك الأكاديمية بالبريد الرسمى للكلية</p>
+
+                        <div class="input-box">
+                            <input type="text" id="natID" placeholder="الرقم القومي (14 رقم)" maxlength="14" required>
+                            <i class="fa-regular fa-id-card"></i>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="email" id="userEmail" placeholder="البريد الإلكتروني (@science.aun.edu.eg)" required>
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+
+                        <div id="loader">🔄 جاري التحقق من السجلات والتحقق من الصلاحيات...</div>
+                        <div id="systemLoader">🔄 جاري جلب التخصصات من قاعدة البيانات...</div>
+
+                        <button type="submit" class="btn" id="submitBtn"><i class="fa-solid fa-right-to-bracket"></i> استعلام ودخول</button>
+                    </form>
+                </div>
+
+                <div class="form-box login">
+                    <form>
+                        <h1>البوابة الأكاديمية</h1>
+                        <p>يرجى الضغط على زر ابدأ الآن للتحقق من بياناتك</p>
+                    </form>
+                </div>
+
+                <div class="toggle-box">
+                    <div class="toggle-panel toggle-left">
+                        <h1>أهلاً بك في كلية العلوم!</h1>
+                        <p>بوابتك الأكاديمية الموحدة لتسجيل المواد الدراسية والتواصل المباشر مع الإدارة.</p>
+                        <button class="btn" id="loginBtn">رجوع للخلف</button>
+                    </div>
+
+                    <div class="toggle-panel toggle-right">
+                        <h1>جامعة أسيوط</h1>
+                        <p>كلية العلوم - نظام التسجيل الإلكتروني</p>
+                        <button class="btn" id="registerBtn">ابدأ الآن</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- لوحة التحكم للطالب -->
+        <div class="dashboard-container" id="dashboardContainer">
+            <!-- الصفحة الأولى: اختيار التخصص والرقم الجامعي -->
+            <div id="portalPage" class="dashboard-page active">
+                <div class="dashboard-header">
+                    <div style="margin-bottom:15px; text-align:center;">
+                        <span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span>
+                    </div>
+                    <h2>البيانات الأكاديمية للطالب</h2>
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-name" id="profileName">اسم الطالب</div>
+                    <div class="profile-badges">
+                        <span id="profilePhase" class="badge">المرحلة الدراسية</span>
+                        <span id="profileDep" class="badge">القسم التخصصي</span>
+                        <span id="profileFaculty" class="badge">كلية العلوم</span>
+                    </div>
+                    <div class="details-text" id="additionalDetails" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="big-choice-card">
+                    <label for="takhsosSelect"><i class="fa-solid fa-graduation-cap" style="color:#2563eb;"></i> اختر التخصص الدراسي المطلوب:</label>
+                    <select id="takhsosSelect">
+                        <option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>
+                    </select>
+
+                    <label for="studentExtraID"><i class="fa-solid fa-id-badge" style="color:#2563eb;"></i> رقم الهوية الجامعي (ID):</label>
+                    <!-- تعديل: عدم كتابة الكود الجامعي تلقائياً ليقوم الطالب بإدخاله بنفسه -->
+                    <input type="text" id="studentExtraID" placeholder="أدخل رقمك الأكاديمي / الكود الجامعي المكون من أرقام يدوياً...">
+                </div>
+
+                <button class="btn" onclick="proceedToSubjects()"><i class="fa-solid fa-arrow-left"></i> متابعة واختيار المواد الدراسية</button>
+                <button class="btn back-btn" onclick="logout()"><i class="fa-solid fa-power-off"></i> تسجيل الخروج</button>
+            </div>
+
+            <!-- الصفحة الثانية: اختيار المواد والتسجيل -->
+            <div id="subjectPage" class="dashboard-page">
+                <div class="dashboard-header">
+                    <h2>تثبيت المقررات الدراسية وحالة القبول</h2>
+                </div>
+
+                <div class="profile-info">
+                    <div class="profile-badges">
+                        <span class="badge">التخصص: <b id="displayTakhsos">--</b></span>
+                        <span class="badge">الرقم الأكاديمي: <b id="displayID">--</b></span>
+                    </div>
+                </div>
+
+                <div class="input-group" id="selectionSection">
+                    <label style="font-weight: 800; font-size: 16px; margin-bottom: 12px; display: block; color: #1e293b;">حدد المقررات التي ترغب بتسجيلها:</label>
+                    <div class="checkbox-container" id="subjectsContainer"></div>
+                    <button class="btn" onclick="saveFinalRegistration()"><i class="fa-solid fa-floppy-disk"></i> حفظ وإنهاء التسجيل</button>
+                    <button class="btn back-btn" onclick="switchDashboardPage('portalPage')"><i class="fa-solid fa-pen-to-square"></i> رجوع لتعديل التخصص</button>
+                </div>
+
+                <!-- بطاقة تقرير الاعتماد والقبول بعد المراجعة -->
+                <div class="status-report-card" id="statusReportCard">
+                    <div class="status-header">
+                        <div>
+                            <h3 style="font-size:20px; font-weight:800; color:#1e3c72;" id="reportStudentName">اسم الطالب</h3>
+                            <p style="color:#64748b; font-size:14px; margin-top:4px;">
+                                ID: <b id="reportStudentID">--</b> | التخصص: <b id="reportStudentTakhsos">--</b>
+                            </p>
+                        </div>
+                        <div>
+                            الحالة العامة: <span id="reportOverallStatus" class="subject-status-tag pending">قيد المراجعة</span>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-bottom:12px; color:#1e293b; font-size:16px;">المقررات التي تم اعتمادها/مراجعتها من المسؤول:</h4>
+                    <div id="reportSubjectsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="live-chat-fab" onclick="toggleFloatingChat()">
+        <i class="fa-brands fa-whatsapp"></i>
+        <div class="chat-badge-dot" id="chatBadgeDot"></div>
+    </div>
+
+    <div class="chat-floating-window" id="chatFloatingWindow">
+        <div class="chat-header-float">
+            <span><i class="fa-solid fa-comments"></i> الدعم الأكاديمي المباشر</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-rotate" style="cursor:pointer;" onclick="loadStudentChatHistory(true)" title="تحديث المحادثة"></i>
+                <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleFloatingChat()"></i>
+            </div>
+        </div>
+
+        <div id="chatIsolatedPortal" class="chat-isolated-login">
+            <h3>🔐 الدخول الآمن للدردشة</h3>
+            <p>يرجى تأكيد هويتك الجامعية لتفعيل واستعادة محادثات الدعم المباشر</p>
+            <input type="text" id="chatLoginNatID" placeholder="الرقم القومي (14 رقم)" maxlength="14">
+            <input type="email" id="chatLoginEmail" placeholder="البريد الجامعي المعتمد">
+            <!-- تعديل: عدم كتابة الكود الجامعي تلقائياً -->
+            <input type="text" id="chatLoginExtraID" placeholder="الرقم الأكاديمي (ID) يدوياً">
+            <button onclick="authenticateChatUser()">دخول واستعادة الرسائل</button>
+        </div>
+
+        <div class="chat-body-float" id="studentChatBodyFloat" style="display:none;"></div>
+        <div class="chat-footer-float" id="studentChatFooterFloat" style="display:none;">
+            <input type="text" id="studentChatInputFloat" placeholder="اكتب رسالتك للمسؤول..." onkeypress="if(event.key==='Enter') sendStudentMessage()">
+            <button onclick="sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; جميع الحقوق محفوظة - البوابة الأكاديمية لكلية العلوم جامعة أسيوط 2026</p>
+    </footer>
+
+    <div id="dynamic3DModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🚫</div>
+            <h3 id="modalTitle">تنبيه</h3>
+            <p id="modalMessage">رسالة</p>
+            <button class="btn" id="modalBtn" onclick="close3DDialog()">حسناً</button>
+        </div>
+    </div>
+
+    <script>
+        const sliderContainer = document.getElementById('sliderContainer');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginBtn = document.getElementById('loginBtn');
+
+        registerBtn.addEventListener('click', () => { sliderContainer.classList.add('active'); });
+        loginBtn.addEventListener('click', () => { sliderContainer.classList.remove('active'); });
+
+        let globalStudentData = {};
+        let dynamicSubjectsMap = {};
+        let chatDataStore = {};
+        let isChatLoggedIn = false;
+        let chatInterval = null;
+
+        const GITHUB_TOKEN = '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';
+        const GIST_ID = '250d68a9e2560e263ba7347f4a78a856';
+        const CHAT_GIST_ID = '7ad83eb4c7800e61a8c97384000bc23d';
+
+        /* تعريف دوال اللودر المنقذ من أخطاء الـ Reference Error */
+        function showLoader(msg) {
+            document.getElementById('loaderText').innerText = msg;
+            document.getElementById('globalLoader').style.display = 'flex';
+        }
+        function hideLoader() {
+            document.getElementById('globalLoader').style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const sysLoader = document.getElementById('systemLoader');
+            const submitBtn = document.getElementById('submitBtn');
+            sysLoader.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                // حل: إضافة الهيدر الأمني لتفادي مشكلة الـ 403 وظهور التخصصات بنجاح
+                const res = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if (res.ok) {
+                    const gistData = await res.json();
+                    if (gistData.files['takhsos_db.json']) {
+                        dynamicSubjectsMap = JSON.parse(gistData.files['takhsos_db.json'].content || "{}");
+
+                        const select = document.getElementById('takhsosSelect');
+                        select.innerHTML = '<option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>';
+
+                        const names = {
+                            "physics": "الفيزياء (Physics)",
+                            "chemistry": "الكيمياء (Chemistry)",
+                            "mathematics": "الرياضيات (Mathematics)",
+                            "computer_science": "علوم الحاسب (Computer Science)",
+                            "biology": "علم الأحياء (Biology)"
+                        };
+
+                        for (let key in dynamicSubjectsMap) {
+                            const opt = document.createElement('option');
+                            opt.value = key;
+                            opt.textContent = names[key] || key;
+                            select.appendChild(opt);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading takhsos DB:", e);
+            } finally {
+                sysLoader.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        let activeCallback = null;
+        function show3DDialog(type, title, message, btnText, callback = null) {
+            const modal = document.getElementById('dynamic3DModal');
+            const iconElement = document.getElementById('modalIcon');
+            const titleElement = document.getElementById('modalTitle');
+            const messageElement = document.getElementById('modalMessage');
+            const btnElement = document.getElementById('modalBtn');
+
+            titleElement.innerText = title;
+            messageElement.innerText = message;
+            btnElement.innerText = btnText || "حسناً";
+            activeCallback = callback;
+
+            btnElement.className = "btn";
+
+            if (type === 'success') {
+                iconElement.innerText = '✅'; titleElement.style.color = '#22c55e'; btnElement.classList.add('modal-btn-success');
+            } else if (type === 'warning') {
+                iconElement.innerText = '⚠️'; titleElement.style.color = '#f59e0b'; btnElement.classList.add('modal-btn-warning');
+            } else {
+                iconElement.innerText = '🚫'; titleElement.style.color = '#ef4444'; btnElement.classList.add('modal-btn-error');
+            }
+            modal.classList.add('active');
+        }
+
+        function close3DDialog() {
+            document.getElementById('dynamic3DModal').classList.remove('active');
+            if (activeCallback) { activeCallback(); activeCallback = null; }
+        }
+
+        function toggleFloatingChat() {
+            document.getElementById('chatFloatingWindow').classList.toggle('active');
+            if (document.getElementById('chatFloatingWindow').classList.contains('active')) {
+                document.getElementById('chatBadgeDot').style.display = 'none';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginWrapper').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+            switchDashboardPage('portalPage');
+        }
+
+        function switchDashboardPage(pageId) {
+            document.querySelectorAll('.dashboard-page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function logout() { location.reload(); }
+
+        async function fetchAndVerifyStudent() {
+            const id = document.getElementById('natID').value.trim();
+            const emailInput = document.getElementById('userEmail').value.trim().toLowerCase();
+            const loader = document.getElementById('loader');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!emailInput.endsWith('@science.aun.edu.eg')) {
+                show3DDialog('error', "بريد غير مقبول", "مسموح فقط بدخول الطلاب الحاملين لبريد كلية العلوم الرسمي:\n@science.aun.edu.eg");
+                return;
+            }
+
+            if (id.length !== 14 || isNaN(id)) {
+                show3DDialog('warning', "تنبيه", "تأكد من كتابة الرقم القومي صحيحاً (14 رقم).");
+                return;
+            }
+
+            loader.style.display = "block";
+            submitBtn.disabled = true;
+
+            try {
+                // 1. التحقق أولاً من السجل وقفل الدخول - حل: إرفاق التوكن الأمني والتعرف على متغير إعادة التسجيل الجديد newlogin
+                let existing = null;
+                const checkRes = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if (checkRes.ok) {
+                    const checkJson = await checkRes.json();
+                    if (checkJson.files['students_db.json']) {
+                        const dbStudents = JSON.parse(checkJson.files['students_db.json'].content || "[]");
+                        existing = dbStudents.find(s => s.natID === id || (s.email && s.email.toLowerCase() === emailInput));
+
+                        // التعديل: إذا كان الطالب مسجلاً مسبقاً، لا يتم منعه من الدخول إذا كان هناك تصريح إعادة التسجيل newlogin أو allowRelogin مفعلين كـ true
+                        if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin && !existing.newlogin) {
+                            show3DDialog('warning', "ممنوع إعادة التسجيل", `مرحباً بك ${existing.name}!\nلقد قمت بتسجيل المقررات مسبقاً.\nيمكنك متابعة حالة قبول المواد والدردشة مع المسؤول.`);
+                            globalStudentData = existing;
+                            loader.style.display = "none"; submitBtn.disabled = false;
+                            showDashboard();
+                            renderStudentStatusReport(existing);
+
+                            // التعبئة التلقائية لبيانات الدخول للدردشة تسهيلاً على الطالب
+                            document.getElementById('chatLoginNatID').value = id;
+                            document.getElementById('chatLoginEmail').value = emailInput;
+                            // تعديل: ترك الكود الأكاديمي فارغاً للكتابة اليدوية
+                            document.getElementById('chatLoginExtraID').value = "";
+                            return;
+                        }
+                    }
+                }
+
+                // 2. الاستعلام من خادم الجامعة
+                const fetchUrl = 'https://script.google.com/macros/s/AKfycbxM2b90KnezzLOvP2L9NkQH9OAhZw_2aItK6vExxyQcmOlqo3buq4R6q-0_9gnBE-c_/exec';
+                const response = await fetch(`${fetchUrl}?id=${id}`);
+                const htmlText = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+
+                const mapping = [
+                    { id: 'UserName', label: 'الاسم' }, { id: 'TextBox1', label: 'الكود' },
+                    { id: 'UserEmail', label: 'البريد' }, { id: 'UserPhoneNumber', label: 'الهاتف' },
+                    { id: 'ddlFaculty', label: 'الكلية' }, { id: 'DDLPhases', label: 'المرحلة' },
+                    { id: 'DDLDep', label: 'القسم' }
+                ];
+
+                let fetchedData = {};
+                let isFound = false;
+
+                mapping.forEach(field => {
+                    const el = doc.querySelector(`[id*="${field.id}"]`);
+                    if (el) {
+                        let val = "";
+                        if (el.tagName === 'SELECT') { val = el.options[el.selectedIndex]?.text; }
+                        else if (el.tagName === 'INPUT') { val = el.value; }
+                        else { val = el.textContent || el.innerText; }
+
+                        if (val && val.trim() !== "0" && !val.includes("--اختر")) {
+                            isFound = true;
+                            fetchedData[field.id] = val.trim();
+                        }
+                    }
+                });
+
+                if (!isFound && !existing) {
+                    show3DDialog('error', "عذراً", "لا يوجد سجل مسجل بهذا الرقم القومي.");
+                    loader.style.display = "none"; submitBtn.disabled = false; return;
+                }
+
+                const dbEmail = fetchedData['UserEmail'] ? fetchedData['UserEmail'].toLowerCase() : (existing ? existing.email : "");
+
+                if (dbEmail === emailInput) {
+                    let facultyVal = fetchedData['ddlFaculty'] || (existing ? existing.faculty : 'كلية العلوم');
+                    if (facultyVal === 'غير محددة' || facultyVal.trim() === '') {
+                        facultyVal = 'كلية العلوم';
+                    }
+
+                    globalStudentData = {
+                        natID: id, email: dbEmail, name: fetchedData['UserName'] || (existing ? existing.name : 'غير مسجل'),
+                        faculty: facultyVal, phase: fetchedData['DDLPhases'] || (existing ? existing.phase : 'غير حددة'),
+                        mainDep: fetchedData['DDLDep'] || (existing ? existing.mainDep : 'غير محدد'),
+                        extraID: fetchedData['TextBox1'] || (existing ? existing.extraID : '')
+                    };
+
+                    document.getElementById('profileName').innerText = globalStudentData.name;
+                    document.getElementById('profilePhase').innerText = globalStudentData.phase;
+                    document.getElementById('profileDep').innerText = globalStudentData.mainDep;
+                    document.getElementById('profileFaculty').innerText = globalStudentData.faculty;
+
+                    // تعديل: ترك حقل الكود فارغاً للتحقق اليدوي وعدم كتابته تلقائياً
+                    document.getElementById('studentExtraID').value = "";
+
+                    document.getElementById('additionalDetails').innerText =
+                        `رقم الهاتف: ${fetchedData['UserPhoneNumber'] || '-'}  |  الكود الجامعي: ${globalStudentData.extraID || '-'}`;
+
+                    loader.style.display = "none";
+
+                    // التعبئة التلقائية لبيانات الدخول للدردشة
+                    document.getElementById('chatLoginNatID').value = id;
+                    document.getElementById('chatLoginEmail').value = emailInput;
+                    document.getElementById('chatLoginExtraID').value = ""; // تعديل: ترك الـ ID يكتب يدوياً للطالب
+
+                    showDashboard();
+                } else {
+                    show3DDialog('error', "خطأ أمني", "البريد الإلكتروني المدخل لا يتطابق مع البريد المسجل بالكلية.");
+                    loader.style.display = "none"; submitBtn.disabled = false;
+                }
+            } catch (error) {
+                show3DDialog('error', "خطأ شبكة", "فشل الاتصال بالخادم.");
+                loader.style.display = "none"; submitBtn.disabled = false;
+            }
+        }
+
+        /* خوارزمية دقيقة ومطورة لتحليل وحساب فترات المحاضرات ومنع أي تقاطع أو تداخل أوقات */
+        function checkScheduleConflicts() {
+            const checkedBoxes = document.querySelectorAll('input[name="selectedSubjects"]:checked');
+            const selectedSubs = [];
+
+            checkedBoxes.forEach(cb => {
+                const subName = cb.value;
+                for (let key in dynamicSubjectsMap) {
+                    const subObj = dynamicSubjectsMap[key].find(s => (s.text || s.name || s) === subName);
+                    if (subObj) {
+                        selectedSubs.push({
+                            name: subName,
+                            day: subObj.day || '',
+                            timeStr: subObj.time || ''
+                        });
+                        break;
+                    }
+                }
+            });
+
+            function parseTimeSpan(str) {
+                if (!str) return null;
+                const matches = str.match(/\d+/g);
+                if (matches && matches.length >= 2) {
+                    let start = parseInt(matches[0]);
+                    let end = parseInt(matches[1]);
+
+                    const isPM = str.includes("م") || str.includes("مساءً") || str.includes("ظهراً") || str.includes("عصراً");
+                    if (isPM) {
+                        if (start < 12) start += 12;
+                        if (end < 12) end += 12;
+                    }
+                    return { start, end };
+                }
+                return null;
+            }
+
+            for (let i = 0; i < selectedSubs.length; i++) {
+                for (let j = i + 1; j < selectedSubs.length; j++) {
+                    const sub1 = selectedSubs[i];
+                    const sub2 = selectedSubs[j];
+
+                    if (sub1.day && sub2.day && sub1.day === sub2.day) {
+                        const time1 = parseTimeSpan(sub1.timeStr);
+                        const time2 = parseTimeSpan(sub2.timeStr);
+
+                        if (time1 && time2) {
+                            const maxStart = Math.max(time1.start, time2.start);
+                            const minEnd = Math.min(time1.end, time2.end);
+
+                            if (maxStart < minEnd) {
+                                return {
+                                    hasConflict: true,
+                                    sub1: sub1.name,
+                                    sub2: sub2.name,
+                                    details: `يوم ${sub1.day} (${sub1.timeStr} متعارض مع ${sub2.timeStr})`
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            return { hasConflict: false };
+        }
+
+        function proceedToSubjects() {
+            const selectedTakhsosKey = document.getElementById('takhsosSelect').value;
+            const extraID = document.getElementById('studentExtraID').value.trim();
+
+            if (!selectedTakhsosKey || extraID === "") {
+                show3DDialog('warning', "بيانات مطلوبة", "يرجى تحديد التخصص الأكاديمي وكتابة رقم الهوية الجامعي (ID) يدوياً."); return;
+            }
+
+            const selElement = document.getElementById('takhsosSelect');
+            globalStudentData.takhsos = selElement.options[selElement.selectedIndex].text;
+            globalStudentData.extraID = extraID;
+
+            document.getElementById('displayTakhsos').innerText = globalStudentData.takhsos;
+            document.getElementById('displayID').innerText = extraID;
+
+            const container = document.getElementById('subjectsContainer');
+            container.innerHTML = '';
+
+            const subjects = dynamicSubjectsMap[selectedTakhsosKey] || [];
+
+            if (subjects.length === 0) {
+                container.innerHTML = '<p style="color:red; text-align:center; padding:20px; font-weight:bold;">لا توجد مواد مسجلة حالياً لهذا التخصص.</p>';
+            }
+
+            subjects.forEach((sub, i) => {
+                const subText = typeof sub === 'string' ? sub : (sub.text || sub.name || sub.value);
+                const subDay = sub.day ? sub.day : '';
+                const subTime = sub.time ? sub.time : '';
+
+                const label = document.createElement('label');
+                label.className = 'custom-checkbox';
+                label.innerHTML = `
+                    <div style="display:flex; align-items:center;">
+                        <input type="checkbox" name="selectedSubjects" value="${subText}" onchange="handleSubjectSelection(this)">
+                        <span class="checkmark"></span>
+                        <span class="text" style="font-weight:700; font-size:16px;">${subText}</span>
+                    </div>
+                    ${(subDay || subTime) ? `
+                    <div class="subject-meta">
+                        ${subDay ? `<span>📅 ${subDay}</span>` : ''}
+                        ${subTime ? `<span>⏰ ${subTime}</span>` : ''}
+                    </div>` : ''}
+                `;
+                container.appendChild(label);
+            });
+
+            switchDashboardPage('subjectPage');
+        }
+
+        function handleSubjectSelection(checkbox) {
+            const conflictStatus = checkScheduleConflicts();
+            if (conflictStatus.hasConflict) {
+                show3DDialog('error', "تعارض في أوقات المحاضرات ❌", `تعذر اختيار هذه المادة لوجود تداخل زمني بين:\n\n• ${conflictStatus.sub1}\n• ${conflictStatus.sub2}\n\nالتفاصيل: ${conflictStatus.details}`, "موافق");
+                checkbox.checked = false;
+            }
+        }
+
+        async function saveFinalRegistration() {
+            const conflictStatus = checkScheduleConflicts();
+            if (conflictStatus.hasConflict) {
+                show3DDialog('error', "تعارض معلق ❌", `يرجى حل التعارض الزمني أولاً قبل إنهاء الحفظ.\nالمواد المتعارضة:\n${conflictStatus.sub1} مع ${conflictStatus.sub2}`, "موافق");
+                return;
+            }
+
+            const checked = document.querySelectorAll('input[name="selectedSubjects"]:checked');
+            if (checked.length === 0) { show3DDialog('warning', "تنبيه", "يجب تحديد مادة واحدة على الأقل للاستمرار."); return; }
+
+            const selectedList = Array.from(checked).map(cb => cb.value);
+            globalStudentData.subjects = selectedList.join(' ، ');
+            globalStudentData.timestamp = new Date().toLocaleString('ar-EG');
+            globalStudentData.status = 'pending';
+
+            // إعادة تهيئة وضبط المتغيرات لقفل الحساب مجدداً بعد إتمام الحفظ بنجاح
+            globalStudentData.allowRelogin = false;
+            globalStudentData.newlogin = false;
+
+            let subStatuses = {};
+            selectedList.forEach(s => subStatuses[s] = 'pending');
+            globalStudentData.subjectStatuses = subStatuses;
+
+            show3DDialog('warning', "جاري التسجيل 🔄", "يتم الآن تثبيت مقرراتك الأكاديمية وحفظ بياناتك...", "انتظر");
+
+            try {
+                let currentData = [];
+                const FILENAME = 'students_db.json';
+
+                const getRes = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if (getRes.ok) {
+                    const getJson = await getRes.json();
+                    if (getJson.files[FILENAME]) {
+                        currentData = JSON.parse(getJson.files[FILENAME].content || "[]");
+                    }
+                }
+
+                const existingIndex = currentData.findIndex(s => s.natID === globalStudentData.natID || s.extraID === globalStudentData.extraID);
+                if (existingIndex !== -1) {
+                    currentData[existingIndex] = globalStudentData;
+                } else {
+                    currentData.push(globalStudentData);
+                }
+
+                const updateRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        files: { [FILENAME]: { content: JSON.stringify(currentData, null, 4) } }
+                    })
+                });
+
+                if (updateRes.ok) {
+                    const msg = `تم تثبيت المواد بنجاح يا ${globalStudentData.name}!\n\nيمكنك الآن متابعة حالة القبول وتفاصيل المواد المعتمدة.`;
+                    show3DDialog('success', "تم التسجيل والحفظ! 🎉", msg, "موافق", () => {
+                        renderStudentStatusReport(globalStudentData);
+                    });
+                } else {
+                    throw new Error("فشل الحفظ في السيرفر");
+                }
+
+            } catch (error) {
+                console.error(error);
+                show3DDialog('error', "خطأ في الاتصال!", "تعذر حفظ البيانات.");
+            }
+        }
+
+        function renderStudentStatusReport(studentObj) {
+            document.getElementById('selectionSection').style.display = 'none';
+            const card = document.getElementById('statusReportCard');
+            card.style.display = 'block';
+
+            document.getElementById('reportStudentName').innerText = studentObj.name;
+            document.getElementById('reportStudentID').innerText = studentObj.extraID || studentObj.natID;
+            document.getElementById('reportStudentTakhsos').innerText = studentObj.takhsos;
+
+            const overallTag = document.getElementById('reportOverallStatus');
+            if (studentObj.status === 'accepted') {
+                overallTag.className = 'subject-status-tag accepted'; overallTag.innerText = 'مقبول ✅';
+            } else if (studentObj.status === 'rejected') {
+                overallTag.className = 'subject-status-tag rejected'; overallTag.innerText = 'مرفوض ❌';
+            } else {
+                overallTag.className = 'subject-status-tag pending'; overallTag.innerText = 'قيد المراجعة ⏳';
+            }
+
+            const listContainer = document.getElementById('reportSubjectsList');
+            listContainer.innerHTML = '';
+
+            const subsList = studentObj.subjects ? studentObj.subjects.split(' ، ') : [];
+            const statuses = studentObj.subjectStatuses || {};
+
+            subsList.forEach(sub => {
+                const st = statuses[sub] || studentObj.status || 'pending';
+
+                let badgeClass = 'pending';
+                let badgeText = 'قيد المراجعة ⏳';
+                if (st === 'accepted') { badgeClass = 'accepted'; badgeText = 'تم قبول المادة ✅'; }
+                if (st === 'rejected') { badgeClass = 'rejected'; badgeText = 'تم رفض المادة ❌'; }
+
+                const div = document.createElement('div');
+                div.className = 'subject-status-item';
+                div.innerHTML = `
+                    <span>${sub}</span>
+                    <span class="subject-status-tag ${badgeClass}">${badgeText}</span>
+                `;
+                listContainer.appendChild(div);
+            });
+
+            switchDashboardPage('subjectPage');
+        }
+
+        /* ================= دردشة الطالب المنعزلة والمطورة (WhatsApp System) ================= */
+        async function authenticateChatUser() {
+            const inputNatID = document.getElementById('chatLoginNatID').value.trim();
+            const inputEmail = document.getElementById('chatLoginEmail').value.trim().toLowerCase();
+            const inputExtraID = document.getElementById('chatLoginExtraID').value.trim();
+
+            if (!inputNatID || !inputEmail || !inputExtraID) {
+                alert("يرجى ملء جميع حقول الأمان المطلوبة للدردشة يدوياً!");
+                return;
+            }
+
+            showLoader("جاري التحقق من الهوية واستعادة المحادثات الموثقة...");
+
+            try {
+                // حل: ربط التوكن بالـ Gist للتحقق من هوية دخول الشات
+                const res = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if (res.ok) {
+                    const gistJson = await res.json();
+                    if (gistJson.files['students_db.json']) {
+                        const db = JSON.parse(gistJson.files['students_db.json'].content || "[]");
+                        const matched = db.find(s => s.natID === inputNatID && s.email.toLowerCase() === inputEmail && (s.extraID === inputExtraID || s.natID === inputExtraID));
+
+                        if (matched) {
+                            globalStudentData = matched;
+                            isChatLoggedIn = true;
+
+                            document.getElementById('chatIsolatedPortal').style.display = 'none';
+                            document.getElementById('studentChatBodyFloat').style.display = 'flex';
+                            document.getElementById('studentChatFooterFloat').style.display = 'flex';
+
+                            await loadStudentChatHistory(false);
+
+                            if (chatInterval) clearInterval(chatInterval);
+                            chatInterval = setInterval(() => {
+                                loadStudentChatHistory(false);
+                            }, 1000); // تحديث تلقائي كل ثانية واحدة
+
+                        } else {
+                            alert("بيانات الأمان (الرقم القومي / الإيميل / الـ ID) غير متطابقة مع سجلات البوابة الأكاديمية!");
+                        }
+                    }
+                }
+            } catch (e) {
+                alert("عذراً، فشل الاتصال بخادم التحقق.");
+            } finally {
+                hideLoader();
+            }
+        }
+
+        async function loadStudentChatHistory(showSpinner = false) {
+            if (!isChatLoggedIn || !globalStudentData.natID) return;
+
+            if (showSpinner) showLoader("جاري تحديث صندوق الرسائل...");
+            try {
+                // حل: تفعيل التوكن للحصول على دردشة محدثة باستمرار
+                const res = await fetch(`https://api.github.com/gists/${CHAT_GIST_ID}?t=${Date.now()}`, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.files['chat_login.json']) {
+                        chatDataStore = JSON.parse(json.files['chat_login.json'].content || "{}");
+                        renderStudentChatMessages();
+                    }
+                }
+            } catch (e) { console.error("Chat load error", e); }
+            if (showSpinner) hideLoader();
+        }
+
+        function renderStudentChatMessages() {
+            const body = document.getElementById('studentChatBodyFloat');
+            const isAtBottom = body.scrollHeight - body.clientHeight <= body.scrollTop + 50;
+
+            body.innerHTML = '';
+
+            const myChatKey = globalStudentData.natID;
+            const myChatObj = chatDataStore[myChatKey] || { messages: [] };
+
+            if (myChatObj.messages.length === 0) {
+                body.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:20px;">لا توجد رسائل سابقة. ابدأ المحادثة المباشرة الآن.</p>';
+                return;
+            }
+
+            let hasAdminReply = false;
+            myChatObj.messages.forEach((msg, idx) => {
+                const div = document.createElement('div');
+                div.className = `msg-bubble ${msg.sender === 'student' ? 'student' : 'admin'}`;
+
+                let tickHTML = '';
+                if (msg.sender === 'student') {
+                    const futureMessages = myChatObj.messages.slice(idx + 1);
+                    const answered = futureMessages.some(m => m.sender === 'admin');
+                    if (answered) {
+                        tickHTML = '<span class="msg-status-tick blue">✓✓</span>';
+                    } else {
+                        tickHTML = '<span class="msg-status-tick gray">✓</span>';
+                    }
+                }
+
+                div.innerHTML = `
+                    <div>${msg.text}</div>
+                    <span class="msg-time">${msg.time}</span>
+                    ${tickHTML}
+                `;
+                body.appendChild(div);
+
+                if (msg.sender === 'admin') hasAdminReply = true;
+            });
+
+            if (hasAdminReply && !document.getElementById('chatFloatingWindow').classList.contains('active')) {
+                document.getElementById('chatBadgeDot').style.display = 'block';
+            }
+
+            if (isAtBottom) {
+                body.scrollTop = body.scrollHeight;
+            }
+        }
+
+        async function sendStudentMessage() {
+            const input = document.getElementById('studentChatInputFloat');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const myChatKey = globalStudentData.natID;
+            if (!chatDataStore[myChatKey]) {
+                chatDataStore[myChatKey] = {
+                    studentName: globalStudentData.name,
+                    email: globalStudentData.email,
+                    extraID: globalStudentData.extraID || globalStudentData.natID,
+                    natID: globalStudentData.natID,
+                    messages: []
+                };
+            }
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            chatDataStore[myChatKey].messages.push({
+                sender: 'student',
+                text: text,
+                time: timeStr
+            });
+
+            input.value = '';
+            renderStudentChatMessages();
+
+            try {
+                await fetch(`https://api.github.com/gists/${CHAT_GIST_ID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        files: { ['chat_login.json']: { content: JSON.stringify(chatDataStore, null, 4) } }
+                    })
+                });
+            } catch (e) { console.error("Failed to save message", e); }
+        }
+    </script>
+
+</body>
+</html>
