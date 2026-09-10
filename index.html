@@ -6,7 +6,7 @@
     <title>البوابة الأكاديمية للطلاب | كلية العلوم</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         * {
@@ -172,7 +172,6 @@
             height: 100%;
         }
 
-            /* تعديل: إضافة أنيميشن التدرج الحركي للأخضر والأبيض المدمج */
             .toggle-box::before {
                 content: "";
                 position: absolute;
@@ -249,7 +248,6 @@
             box-shadow: none;
         }
 
-        /* تأثير الوهج الأبيض الجذاب للنص لضمان وضوحه تماماً */
         .toggle-panel.toggle-right h1, .toggle-panel.toggle-right p {
             color: #ffffff;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
@@ -630,7 +628,6 @@
             display: none;
         }
 
-        /* شارات التضامن الفخري مع مصر وفلسطين */
         .solidarity-badge {
             display: inline-flex;
             align-items: center;
@@ -659,7 +656,6 @@
             }
         }
 
-        /* نافذة الدردشة الطافية */
         .chat-floating-window {
             position: fixed;
             bottom: 105px;
@@ -791,7 +787,6 @@
                 justify-content: center;
             }
 
-        /* نافذة تسجيل الدخول للدردشة */
         .chat-isolated-login {
             display: flex;
             flex-direction: column;
@@ -923,7 +918,6 @@
             background: #f59e0b;
         }
 
-        /* ستايل لودر التثبيت المنقذ لمشكلة Reference Error */
         #globalLoader {
             position: fixed;
             top: 0;
@@ -954,7 +948,6 @@
 </head>
 <body>
 
-    <!-- صندوق تحميل المتصفح المنقذ من أخطاء الاتصال والدردشة -->
     <div id="globalLoader">
         <i class="fa-solid fa-circle-notch"></i>
         <h3 id="loaderText" style="font-weight: 700; color: #1e3c72;">جاري الاتصال...</h3>
@@ -1041,7 +1034,6 @@
                     </select>
 
                     <label for="studentExtraID"><i class="fa-solid fa-id-badge" style="color:#2563eb;"></i> رقم الهوية الجامعي (ID):</label>
-                    <!-- تعديل: عدم كتابة الكود الجامعي تلقائياً ليقوم الطالب بإدخاله بنفسه -->
                     <input type="text" id="studentExtraID" placeholder="أدخل رقمك الأكاديمي / الكود الجامعي المكون من أرقام يدوياً...">
                 </div>
 
@@ -1069,7 +1061,7 @@
                     <button class="btn back-btn" onclick="switchDashboardPage('portalPage')"><i class="fa-solid fa-pen-to-square"></i> رجوع لتعديل التخصص</button>
                 </div>
 
-                <!-- بطاقة تقرير الاعتماد والقبول بعد المراجعة -->
+                <!-- بطاقة تقرير الاعتماد والقبول -->
                 <div class="status-report-card" id="statusReportCard">
                     <div class="status-header">
                         <div>
@@ -1090,6 +1082,7 @@
         </div>
     </div>
 
+    <!-- نافذة وأيقونة الدردشة المباشرة -->
     <div class="live-chat-fab" onclick="toggleFloatingChat()">
         <i class="fa-brands fa-whatsapp"></i>
         <div class="chat-badge-dot" id="chatBadgeDot"></div>
@@ -1109,7 +1102,6 @@
             <p>يرجى تأكيد هويتك الجامعية لتفعيل واستعادة محادثات الدعم المباشر</p>
             <input type="text" id="chatLoginNatID" placeholder="الرقم القومي (14 رقم)" maxlength="14">
             <input type="email" id="chatLoginEmail" placeholder="البريد الجامعي المعتمد">
-            <!-- تعديل: عدم كتابة الكود الجامعي تلقائياً -->
             <input type="text" id="chatLoginExtraID" placeholder="الرقم الأكاديمي (ID) يدوياً">
             <button onclick="authenticateChatUser()">دخول واستعادة الرسائل</button>
         </div>
@@ -1148,11 +1140,9 @@
         let isChatLoggedIn = false;
         let chatInterval = null;
 
-        const GITHUB_TOKEN = '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';
-        const GIST_ID = '250d68a9e2560e263ba7347f4a78a856';
-        const CHAT_GIST_ID = '7ad83eb4c7800e61a8c97384000bc23d';
+        // رابط الـ Cloudflare Worker الوسيط الآمن
+        const WORKER_API_URL = 'https://lingering-morning-1c34.hstudy3rd.workers.dev';
 
-        /* تعريف دوال اللودر المنقذ من أخطاء الـ Reference Error */
         function showLoader(msg) {
             document.getElementById('loaderText').innerText = msg;
             document.getElementById('globalLoader').style.display = 'flex';
@@ -1168,13 +1158,10 @@
             submitBtn.disabled = true;
 
             try {
-                // حل: إضافة الهيدر الأمني لتفادي مشكلة الـ 403 وظهور التخصصات بنجاح
-                const res = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
+                const res = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
                 if (res.ok) {
                     const gistData = await res.json();
-                    if (gistData.files['takhsos_db.json']) {
+                    if (gistData.files && gistData.files['takhsos_db.json']) {
                         dynamicSubjectsMap = JSON.parse(gistData.files['takhsos_db.json'].content || "{}");
 
                         const select = document.getElementById('takhsosSelect');
@@ -1274,18 +1261,14 @@
             submitBtn.disabled = true;
 
             try {
-                // 1. التحقق أولاً من السجل وقفل الدخول - حل: إرفاق التوكن الأمني والتعرف على متغير إعادة التسجيل الجديد newlogin
                 let existing = null;
-                const checkRes = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
+                const checkRes = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
                 if (checkRes.ok) {
                     const checkJson = await checkRes.json();
-                    if (checkJson.files['students_db.json']) {
+                    if (checkJson.files && checkJson.files['students_db.json']) {
                         const dbStudents = JSON.parse(checkJson.files['students_db.json'].content || "[]");
                         existing = dbStudents.find(s => s.natID === id || (s.email && s.email.toLowerCase() === emailInput));
 
-                        // التعديل: إذا كان الطالب مسجلاً مسبقاً، لا يتم منعه من الدخول إذا كان هناك تصريح إعادة التسجيل newlogin أو allowRelogin مفعلين كـ true
                         if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin && !existing.newlogin) {
                             show3DDialog('warning', "ممنوع إعادة التسجيل", `مرحباً بك ${existing.name}!\nلقد قمت بتسجيل المقررات مسبقاً.\nيمكنك متابعة حالة قبول المواد والدردشة مع المسؤول.`);
                             globalStudentData = existing;
@@ -1293,17 +1276,15 @@
                             showDashboard();
                             renderStudentStatusReport(existing);
 
-                            // التعبئة التلقائية لبيانات الدخول للدردشة تسهيلاً على الطالب
                             document.getElementById('chatLoginNatID').value = id;
                             document.getElementById('chatLoginEmail').value = emailInput;
-                            // تعديل: ترك الكود الأكاديمي فارغاً للكتابة اليدوية
                             document.getElementById('chatLoginExtraID').value = "";
                             return;
                         }
                     }
                 }
 
-                // 2. الاستعلام من خادم الجامعة
+                // الاستعلام من خادم الجامعة
                 const fetchUrl = 'https://script.google.com/macros/s/AKfycbxM2b90KnezzLOvP2L9NkQH9OAhZw_2aItK6vExxyQcmOlqo3buq4R6q-0_9gnBE-c_/exec';
                 const response = await fetch(`${fetchUrl}?id=${id}`);
                 const htmlText = await response.text();
@@ -1350,7 +1331,7 @@
 
                     globalStudentData = {
                         natID: id, email: dbEmail, name: fetchedData['UserName'] || (existing ? existing.name : 'غير مسجل'),
-                        faculty: facultyVal, phase: fetchedData['DDLPhases'] || (existing ? existing.phase : 'غير حددة'),
+                        faculty: facultyVal, phase: fetchedData['DDLPhases'] || (existing ? existing.phase : 'غير محددة'),
                         mainDep: fetchedData['DDLDep'] || (existing ? existing.mainDep : 'غير محدد'),
                         extraID: fetchedData['TextBox1'] || (existing ? existing.extraID : '')
                     };
@@ -1360,18 +1341,15 @@
                     document.getElementById('profileDep').innerText = globalStudentData.mainDep;
                     document.getElementById('profileFaculty').innerText = globalStudentData.faculty;
 
-                    // تعديل: ترك حقل الكود فارغاً للتحقق اليدوي وعدم كتابته تلقائياً
                     document.getElementById('studentExtraID').value = "";
-
                     document.getElementById('additionalDetails').innerText =
                         `رقم الهاتف: ${fetchedData['UserPhoneNumber'] || '-'}  |  الكود الجامعي: ${globalStudentData.extraID || '-'}`;
 
                     loader.style.display = "none";
 
-                    // التعبئة التلقائية لبيانات الدخول للدردشة
                     document.getElementById('chatLoginNatID').value = id;
                     document.getElementById('chatLoginEmail').value = emailInput;
-                    document.getElementById('chatLoginExtraID').value = ""; // تعديل: ترك الـ ID يكتب يدوياً للطالب
+                    document.getElementById('chatLoginExtraID').value = "";
 
                     showDashboard();
                 } else {
@@ -1384,7 +1362,6 @@
             }
         }
 
-        /* خوارزمية دقيقة ومطورة لتحليل وحساب فترات المحاضرات ومنع أي تقاطع أو تداخل أوقات */
         function checkScheduleConflicts() {
             const checkedBoxes = document.querySelectorAll('input[name="selectedSubjects"]:checked');
             const selectedSubs = [];
@@ -1481,17 +1458,17 @@
                 const label = document.createElement('label');
                 label.className = 'custom-checkbox';
                 label.innerHTML = `
-                    <div style="display:flex; align-items:center;">
-                        <input type="checkbox" name="selectedSubjects" value="${subText}" onchange="handleSubjectSelection(this)">
-                        <span class="checkmark"></span>
-                        <span class="text" style="font-weight:700; font-size:16px;">${subText}</span>
-                    </div>
-                    ${(subDay || subTime) ? `
-                    <div class="subject-meta">
-                        ${subDay ? `<span>📅 ${subDay}</span>` : ''}
-                        ${subTime ? `<span>⏰ ${subTime}</span>` : ''}
-                    </div>` : ''}
-                `;
+                        <div style="display:flex; align-items:center;">
+                            <input type="checkbox" name="selectedSubjects" value="${subText}" onchange="handleSubjectSelection(this)">
+                            <span class="checkmark"></span>
+                            <span class="text" style="font-weight:700; font-size:16px;">${subText}</span>
+                        </div>
+                        ${(subDay || subTime) ? `
+                        <div class="subject-meta">
+                            ${subDay ? `<span>📅 ${subDay}</span>` : ''}
+                            ${subTime ? `<span>⏰ ${subTime}</span>` : ''}
+                        </div>` : ''}
+                    `;
                 container.appendChild(label);
             });
 
@@ -1520,8 +1497,6 @@
             globalStudentData.subjects = selectedList.join(' ، ');
             globalStudentData.timestamp = new Date().toLocaleString('ar-EG');
             globalStudentData.status = 'pending';
-
-            // إعادة تهيئة وضبط المتغيرات لقفل الحساب مجدداً بعد إتمام الحفظ بنجاح
             globalStudentData.allowRelogin = false;
             globalStudentData.newlogin = false;
 
@@ -1535,12 +1510,10 @@
                 let currentData = [];
                 const FILENAME = 'students_db.json';
 
-                const getRes = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
+                const getRes = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
                 if (getRes.ok) {
                     const getJson = await getRes.json();
-                    if (getJson.files[FILENAME]) {
+                    if (getJson.files && getJson.files[FILENAME]) {
                         currentData = JSON.parse(getJson.files[FILENAME].content || "[]");
                     }
                 }
@@ -1552,15 +1525,13 @@
                     currentData.push(globalStudentData);
                 }
 
-                const updateRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
+                const updateRes = await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        files: { [FILENAME]: { content: JSON.stringify(currentData, null, 4) } }
+                        action: 'saveMainFile',
+                        filename: FILENAME,
+                        content: currentData
                     })
                 });
 
@@ -1614,16 +1585,16 @@
                 const div = document.createElement('div');
                 div.className = 'subject-status-item';
                 div.innerHTML = `
-                    <span>${sub}</span>
-                    <span class="subject-status-tag ${badgeClass}">${badgeText}</span>
-                `;
+                        <span>${sub}</span>
+                        <span class="subject-status-tag ${badgeClass}">${badgeText}</span>
+                    `;
                 listContainer.appendChild(div);
             });
 
             switchDashboardPage('subjectPage');
         }
 
-        /* ================= دردشة الطالب المنعزلة والمطورة (WhatsApp System) ================= */
+        /* ================= دردشة الطالب المباشرة ================= */
         async function authenticateChatUser() {
             const inputNatID = document.getElementById('chatLoginNatID').value.trim();
             const inputEmail = document.getElementById('chatLoginEmail').value.trim().toLowerCase();
@@ -1637,13 +1608,10 @@
             showLoader("جاري التحقق من الهوية واستعادة المحادثات الموثقة...");
 
             try {
-                // حل: ربط التوكن بالـ Gist للتحقق من هوية دخول الشات
-                const res = await fetch(`https://api.github.com/gists/${GIST_ID}?t=${Date.now()}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
+                const res = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
                 if (res.ok) {
                     const gistJson = await res.json();
-                    if (gistJson.files['students_db.json']) {
+                    if (gistJson.files && gistJson.files['students_db.json']) {
                         const db = JSON.parse(gistJson.files['students_db.json'].content || "[]");
                         const matched = db.find(s => s.natID === inputNatID && s.email.toLowerCase() === inputEmail && (s.extraID === inputExtraID || s.natID === inputExtraID));
 
@@ -1660,7 +1628,7 @@
                             if (chatInterval) clearInterval(chatInterval);
                             chatInterval = setInterval(() => {
                                 loadStudentChatHistory(false);
-                            }, 1000); // تحديث تلقائي كل ثانية واحدة
+                            }, 1500);
 
                         } else {
                             alert("بيانات الأمان (الرقم القومي / الإيميل / الـ ID) غير متطابقة مع سجلات البوابة الأكاديمية!");
@@ -1679,13 +1647,10 @@
 
             if (showSpinner) showLoader("جاري تحديث صندوق الرسائل...");
             try {
-                // حل: تفعيل التوكن للحصول على دردشة محدثة باستمرار
-                const res = await fetch(`https://api.github.com/gists/${CHAT_GIST_ID}?t=${Date.now()}`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
+                const res = await fetch(`${WORKER_API_URL}?action=getChatData&t=${Date.now()}`);
                 if (res.ok) {
                     const json = await res.json();
-                    if (json.files['chat_login.json']) {
+                    if (json.files && json.files['chat_login.json']) {
                         chatDataStore = JSON.parse(json.files['chat_login.json'].content || "{}");
                         renderStudentChatMessages();
                     }
@@ -1725,10 +1690,10 @@
                 }
 
                 div.innerHTML = `
-                    <div>${msg.text}</div>
-                    <span class="msg-time">${msg.time}</span>
-                    ${tickHTML}
-                `;
+                        <div>${msg.text}</div>
+                        <span class="msg-time">${msg.time}</span>
+                        ${tickHTML}
+                    `;
                 body.appendChild(div);
 
                 if (msg.sender === 'admin') hasAdminReply = true;
@@ -1772,20 +1737,16 @@
             renderStudentChatMessages();
 
             try {
-                await fetch(`https://api.github.com/gists/${CHAT_GIST_ID}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
+                await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        files: { ['chat_login.json']: { content: JSON.stringify(chatDataStore, null, 4) } }
+                        action: 'saveChat',
+                        content: chatDataStore
                     })
                 });
             } catch (e) { console.error("Failed to save message", e); }
         }
     </script>
-
 </body>
 </html>
