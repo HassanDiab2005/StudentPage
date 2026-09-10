@@ -848,6 +848,7 @@
             text-align: center;
         }
 
+        /* نافذة الحوار ثلاثية الأبعاد 3D Dialog كاملة التأثيرات */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -974,9 +975,6 @@
                             <input type="email" id="userEmail" placeholder="البريد الإلكتروني (@science.aun.edu.eg)" required>
                             <i class="fa-regular fa-envelope"></i>
                         </div>
-
-                        <div id="loader">🔄 جاري التحقق من السجلات والتحقق من الصلاحيات...</div>
-                        <div id="systemLoader">🔄 جاري جلب التخصصات من قاعدة البيانات...</div>
 
                         <button type="submit" class="btn" id="submitBtn"><i class="fa-solid fa-right-to-bracket"></i> استعلام ودخول</button>
                     </form>
@@ -1117,6 +1115,7 @@
         <p>&copy; جميع الحقوق محفوظة - البوابة الأكاديمية لكلية العلوم جامعة أسيوط 2026</p>
     </footer>
 
+    <!-- نافذة الحوار ثلاثية الأبعاد 3D Dialog -->
     <div id="dynamic3DModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-icon" id="modalIcon">🚫</div>
@@ -1136,7 +1135,6 @@
 
         let globalStudentData = {};
         let dynamicSubjectsMap = {};
-        let chatDataStore = {};
         let isChatLoggedIn = false;
         let chatInterval = null;
 
@@ -1152,17 +1150,16 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            const sysLoader = document.getElementById('systemLoader');
             const submitBtn = document.getElementById('submitBtn');
-            sysLoader.style.display = 'block';
             submitBtn.disabled = true;
 
             try {
-                const res = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
+                // جلب التخصصات فقط (دون تسريب أي بيانات أخرى)
+                const res = await fetch(`${WORKER_API_URL}?action=getTakhsos&t=${Date.now()}`);
                 if (res.ok) {
-                    const gistData = await res.json();
-                    if (gistData.files && gistData.files['takhsos_db.json']) {
-                        dynamicSubjectsMap = JSON.parse(gistData.files['takhsos_db.json'].content || "{}");
+                    const data = await res.json();
+                    if (data.takhsos) {
+                        dynamicSubjectsMap = data.takhsos;
 
                         const select = document.getElementById('takhsosSelect');
                         select.innerHTML = '<option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>';
@@ -1186,7 +1183,6 @@
             } catch (e) {
                 console.error("Error loading takhsos DB:", e);
             } finally {
-                sysLoader.style.display = 'none';
                 submitBtn.disabled = false;
             }
         });
@@ -1244,7 +1240,6 @@
         async function fetchAndVerifyStudent() {
             const id = document.getElementById('natID').value.trim();
             const emailInput = document.getElementById('userEmail').value.trim().toLowerCase();
-            const loader = document.getElementById('loader');
             const submitBtn = document.getElementById('submitBtn');
 
             if (!emailInput.endsWith('@science.aun.edu.eg')) {
@@ -1257,34 +1252,42 @@
                 return;
             }
 
-            loader.style.display = "block";
+            showLoader("جاري التحقق من السجلات والتحقق من الصلاحيات...");
             submitBtn.disabled = true;
 
             try {
+                // 1. التحقق المعزول من السجل
+                const checkRes = await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'studentCheckStatus',
+                        natID: id,
+                        email: emailInput
+                    })
+                });
+
                 let existing = null;
-                const checkRes = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
                 if (checkRes.ok) {
                     const checkJson = await checkRes.json();
-                    if (checkJson.files && checkJson.files['students_db.json']) {
-                        const dbStudents = JSON.parse(checkJson.files['students_db.json'].content || "[]");
-                        existing = dbStudents.find(s => s.natID === id || (s.email && s.email.toLowerCase() === emailInput));
+                    existing = checkJson.student;
 
-                        if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin && !existing.newlogin) {
-                            show3DDialog('warning', "ممنوع إعادة التسجيل", `مرحباً بك ${existing.name}!\nلقد قمت بتسجيل المقررات مسبقاً.\nيمكنك متابعة حالة قبول المواد والدردشة مع المسؤول.`);
-                            globalStudentData = existing;
-                            loader.style.display = "none"; submitBtn.disabled = false;
-                            showDashboard();
-                            renderStudentStatusReport(existing);
+                    if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin && !existing.newlogin) {
+                        hideLoader();
+                        submitBtn.disabled = false;
+                        show3DDialog('warning', "ممنوع إعادة التسجيل", `مرحباً بك ${existing.name}!\nلقد قمت بتسجيل المقررات مسبقاً.\nيمكنك متابعة حالة قبول المواد والدردشة مع المسؤول.`);
+                        globalStudentData = existing;
+                        showDashboard();
+                        renderStudentStatusReport(existing);
 
-                            document.getElementById('chatLoginNatID').value = id;
-                            document.getElementById('chatLoginEmail').value = emailInput;
-                            document.getElementById('chatLoginExtraID').value = "";
-                            return;
-                        }
+                        document.getElementById('chatLoginNatID').value = id;
+                        document.getElementById('chatLoginEmail').value = emailInput;
+                        document.getElementById('chatLoginExtraID').value = "";
+                        return;
                     }
                 }
 
-                // الاستعلام من خادم الجامعة
+                // 2. الاستعلام من خادم الجامعة
                 const fetchUrl = 'https://script.google.com/macros/s/AKfycbxM2b90KnezzLOvP2L9NkQH9OAhZw_2aItK6vExxyQcmOlqo3buq4R6q-0_9gnBE-c_/exec';
                 const response = await fetch(`${fetchUrl}?id=${id}`);
                 const htmlText = await response.text();
@@ -1317,8 +1320,10 @@
                 });
 
                 if (!isFound && !existing) {
+                    hideLoader();
+                    submitBtn.disabled = false;
                     show3DDialog('error', "عذراً", "لا يوجد سجل مسجل بهذا الرقم القومي.");
-                    loader.style.display = "none"; submitBtn.disabled = false; return;
+                    return;
                 }
 
                 const dbEmail = fetchedData['UserEmail'] ? fetchedData['UserEmail'].toLowerCase() : (existing ? existing.email : "");
@@ -1345,7 +1350,8 @@
                     document.getElementById('additionalDetails').innerText =
                         `رقم الهاتف: ${fetchedData['UserPhoneNumber'] || '-'}  |  الكود الجامعي: ${globalStudentData.extraID || '-'}`;
 
-                    loader.style.display = "none";
+                    hideLoader();
+                    submitBtn.disabled = false;
 
                     document.getElementById('chatLoginNatID').value = id;
                     document.getElementById('chatLoginEmail').value = emailInput;
@@ -1353,12 +1359,14 @@
 
                     showDashboard();
                 } else {
+                    hideLoader();
+                    submitBtn.disabled = false;
                     show3DDialog('error', "خطأ أمني", "البريد الإلكتروني المدخل لا يتطابق مع البريد المسجل بالكلية.");
-                    loader.style.display = "none"; submitBtn.disabled = false;
                 }
             } catch (error) {
+                hideLoader();
+                submitBtn.disabled = false;
                 show3DDialog('error', "خطأ شبكة", "فشل الاتصال بالخادم.");
-                loader.style.display = "none"; submitBtn.disabled = false;
             }
         }
 
@@ -1431,7 +1439,8 @@
             const extraID = document.getElementById('studentExtraID').value.trim();
 
             if (!selectedTakhsosKey || extraID === "") {
-                show3DDialog('warning', "بيانات مطلوبة", "يرجى تحديد التخصص الأكاديمي وكتابة رقم الهوية الجامعي (ID) يدوياً."); return;
+                show3DDialog('warning', "بيانات مطلوبة", "يرجى تحديد التخصص الأكاديمي وكتابة رقم الهوية الجامعي (ID) يدوياً.");
+                return;
             }
 
             const selElement = document.getElementById('takhsosSelect');
@@ -1491,7 +1500,10 @@
             }
 
             const checked = document.querySelectorAll('input[name="selectedSubjects"]:checked');
-            if (checked.length === 0) { show3DDialog('warning', "تنبيه", "يجب تحديد مادة واحدة على الأقل للاستمرار."); return; }
+            if (checked.length === 0) {
+                show3DDialog('warning', "تنبيه", "يجب تحديد مادة واحدة على الأقل للاستمرار.");
+                return;
+            }
 
             const selectedList = Array.from(checked).map(cb => cb.value);
             globalStudentData.subjects = selectedList.join(' ، ');
@@ -1504,37 +1516,19 @@
             selectedList.forEach(s => subStatuses[s] = 'pending');
             globalStudentData.subjectStatuses = subStatuses;
 
-            show3DDialog('warning', "جاري التسجيل 🔄", "يتم الآن تثبيت مقرراتك الأكاديمية وحفظ بياناتك...", "انتظر");
+            showLoader("يتم الآن تثبيت مقرراتك الأكاديمية وحفظ بياناتك...");
 
             try {
-                let currentData = [];
-                const FILENAME = 'students_db.json';
-
-                const getRes = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
-                if (getRes.ok) {
-                    const getJson = await getRes.json();
-                    if (getJson.files && getJson.files[FILENAME]) {
-                        currentData = JSON.parse(getJson.files[FILENAME].content || "[]");
-                    }
-                }
-
-                const existingIndex = currentData.findIndex(s => s.natID === globalStudentData.natID || s.extraID === globalStudentData.extraID);
-                if (existingIndex !== -1) {
-                    currentData[existingIndex] = globalStudentData;
-                } else {
-                    currentData.push(globalStudentData);
-                }
-
                 const updateRes = await fetch(WORKER_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        action: 'saveMainFile',
-                        filename: FILENAME,
-                        content: currentData
+                        action: 'studentSubmitRegistration',
+                        studentData: globalStudentData
                     })
                 });
 
+                hideLoader();
                 if (updateRes.ok) {
                     const msg = `تم تثبيت المواد بنجاح يا ${globalStudentData.name}!\n\nيمكنك الآن متابعة حالة القبول وتفاصيل المواد المعتمدة.`;
                     show3DDialog('success', "تم التسجيل والحفظ! 🎉", msg, "موافق", () => {
@@ -1545,7 +1539,7 @@
                 }
 
             } catch (error) {
-                console.error(error);
+                hideLoader();
                 show3DDialog('error', "خطأ في الاتصال!", "تعذر حفظ البيانات.");
             }
         }
@@ -1608,31 +1602,33 @@
             showLoader("جاري التحقق من الهوية واستعادة المحادثات الموثقة...");
 
             try {
-                const res = await fetch(`${WORKER_API_URL}?action=getMainData&t=${Date.now()}`);
-                if (res.ok) {
-                    const gistJson = await res.json();
-                    if (gistJson.files && gistJson.files['students_db.json']) {
-                        const db = JSON.parse(gistJson.files['students_db.json'].content || "[]");
-                        const matched = db.find(s => s.natID === inputNatID && s.email.toLowerCase() === inputEmail && (s.extraID === inputExtraID || s.natID === inputExtraID));
+                const checkRes = await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'studentCheckStatus', natID: inputNatID, email: inputEmail })
+                });
 
-                        if (matched) {
-                            globalStudentData = matched;
-                            isChatLoggedIn = true;
+                if (checkRes.ok) {
+                    const json = await checkRes.json();
+                    const matched = json.student;
 
-                            document.getElementById('chatIsolatedPortal').style.display = 'none';
-                            document.getElementById('studentChatBodyFloat').style.display = 'flex';
-                            document.getElementById('studentChatFooterFloat').style.display = 'flex';
+                    if (matched && (matched.extraID === inputExtraID || matched.natID === inputExtraID)) {
+                        globalStudentData = matched;
+                        isChatLoggedIn = true;
 
-                            await loadStudentChatHistory(false);
+                        document.getElementById('chatIsolatedPortal').style.display = 'none';
+                        document.getElementById('studentChatBodyFloat').style.display = 'flex';
+                        document.getElementById('studentChatFooterFloat').style.display = 'flex';
 
-                            if (chatInterval) clearInterval(chatInterval);
-                            chatInterval = setInterval(() => {
-                                loadStudentChatHistory(false);
-                            }, 1500);
+                        await loadStudentChatHistory(false);
 
-                        } else {
-                            alert("بيانات الأمان (الرقم القومي / الإيميل / الـ ID) غير متطابقة مع سجلات البوابة الأكاديمية!");
-                        }
+                        if (chatInterval) clearInterval(chatInterval);
+                        chatInterval = setInterval(() => {
+                            loadStudentChatHistory(false);
+                        }, 1500);
+
+                    } else {
+                        alert("بيانات الأمان (الرقم القومي / الإيميل / الـ ID) غير متطابقة مع سجلات البوابة الأكاديمية!");
                     }
                 }
             } catch (e) {
@@ -1647,40 +1643,40 @@
 
             if (showSpinner) showLoader("جاري تحديث صندوق الرسائل...");
             try {
-                const res = await fetch(`${WORKER_API_URL}?action=getChatData&t=${Date.now()}`);
+                const res = await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'studentGetMyChat', natID: globalStudentData.natID })
+                });
+
                 if (res.ok) {
                     const json = await res.json();
-                    if (json.files && json.files['chat_login.json']) {
-                        chatDataStore = JSON.parse(json.files['chat_login.json'].content || "{}");
-                        renderStudentChatMessages();
-                    }
+                    renderStudentChatMessages(json.myChat || { messages: [] });
                 }
             } catch (e) { console.error("Chat load error", e); }
             if (showSpinner) hideLoader();
         }
 
-        function renderStudentChatMessages() {
+        function renderStudentChatMessages(chatObj) {
             const body = document.getElementById('studentChatBodyFloat');
             const isAtBottom = body.scrollHeight - body.clientHeight <= body.scrollTop + 50;
 
             body.innerHTML = '';
+            const messages = chatObj.messages || [];
 
-            const myChatKey = globalStudentData.natID;
-            const myChatObj = chatDataStore[myChatKey] || { messages: [] };
-
-            if (myChatObj.messages.length === 0) {
+            if (messages.length === 0) {
                 body.innerHTML = '<p style="text-align:center; color:#888; font-size:13px; margin-top:20px;">لا توجد رسائل سابقة. ابدأ المحادثة المباشرة الآن.</p>';
                 return;
             }
 
             let hasAdminReply = false;
-            myChatObj.messages.forEach((msg, idx) => {
+            messages.forEach((msg, idx) => {
                 const div = document.createElement('div');
                 div.className = `msg-bubble ${msg.sender === 'student' ? 'student' : 'admin'}`;
 
                 let tickHTML = '';
                 if (msg.sender === 'student') {
-                    const futureMessages = myChatObj.messages.slice(idx + 1);
+                    const futureMessages = messages.slice(idx + 1);
                     const answered = futureMessages.some(m => m.sender === 'admin');
                     if (answered) {
                         tickHTML = '<span class="msg-status-tick blue">✓✓</span>';
@@ -1691,7 +1687,7 @@
 
                 div.innerHTML = `
                         <div>${msg.text}</div>
-                        <span class="msg-time">${msg.time}</span>
+                        <span class="msg-time">${msg.time || ''}</span>
                         ${tickHTML}
                     `;
                 body.appendChild(div);
@@ -1713,38 +1709,26 @@
             const text = input.value.trim();
             if (!text) return;
 
-            const myChatKey = globalStudentData.natID;
-            if (!chatDataStore[myChatKey]) {
-                chatDataStore[myChatKey] = {
-                    studentName: globalStudentData.name,
-                    email: globalStudentData.email,
-                    extraID: globalStudentData.extraID || globalStudentData.natID,
-                    natID: globalStudentData.natID,
-                    messages: []
-                };
-            }
-
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-
-            chatDataStore[myChatKey].messages.push({
-                sender: 'student',
-                text: text,
-                time: timeStr
-            });
+            const msgPayload = { sender: 'student', text: text, time: timeStr };
 
             input.value = '';
-            renderStudentChatMessages();
 
             try {
                 await fetch(WORKER_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        action: 'saveChat',
-                        content: chatDataStore
+                        action: 'studentSendMessage',
+                        natID: globalStudentData.natID,
+                        studentName: globalStudentData.name,
+                        email: globalStudentData.email,
+                        extraID: globalStudentData.extraID || globalStudentData.natID,
+                        message: msgPayload
                     })
                 });
+                await loadStudentChatHistory(false);
             } catch (e) { console.error("Failed to save message", e); }
         }
     </script>
