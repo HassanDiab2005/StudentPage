@@ -7,8 +7,32 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
 
     <style>
+        /* تصميم زر الرابط الخارجي الجديد */
+.external-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1.5px solid #bfdbfe;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.external-link-btn:hover {
+    background: #dbeafe;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
         * {
             margin: 0;
             padding: 0;
@@ -783,8 +807,15 @@
                     <div style="margin-bottom:12px;">
                         <span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span>
                     </div>
+                    
                     <h1>البوابة الأكاديمية</h1>
                     <p>تسجيل الدخول بالرقم القومي والبريد الرسمي لكلية العلوم</p>
+
+                     <!-- الزر الجديد للرابط الخارجي (ضع رابطك بدلاً من الرابط المكتوب) -->
+                    <a href="https://your-link-here.com" target="_blank" class="external-link-btn">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> الانتقال إلى الرابط الجديد
+                    </a>
+                    
 
                     <div class="input-box">
                         <input type="text" id="natID" placeholder="الرقم القومي (14 رقم)" maxlength="14" required>
