@@ -4,849 +4,629 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>البوابة الأكاديمية للطلاب | كلية العلوم | ISM-HAG Project</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Cairo:wght@600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-
     <style>
-        /* تصميم زر الرابط الخارجي الجديد */
-.external-link-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #eff6ff;
-    color: #2563eb;
-    border: 1.5px solid #bfdbfe;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 15px;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-
-.external-link-btn:hover {
-    background: #dbeafe;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-}
-        * {
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; text-decoration: none; list-style: none; }
+        :root { --primary: #1e3c72; --palestine-green: #007a3d; --palestine-red: #ce1126; --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e3c72 35%, #007a3d 70%, #ce1126 100%); }
+        
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            background: var(--bg-gradient); 
+            background-size: 300% 300%; 
+            animation: flagGradientMove 14s ease infinite; 
+            color: #333; 
+            overflow-x: hidden; 
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
-            text-decoration: none;
-            list-style: none;
         }
 
-        :root {
-            --primary: #1e3c72;
-            --primary-dark: #0f172a;
-            --palestine-green: #007a3d;
-            --palestine-red: #ce1126;
-            --egypt-gold: #c0932b;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e3c72 35%, #007a3d 70%, #ce1126 100%);
-        }
+        @keyframes flagGradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background: var(--bg-gradient);
-            background-size: 300% 300%;
-            animation: flagGradientMove 14s ease infinite;
-            color: #333;
-            overflow-x: hidden;
-            padding-bottom: 75px;
-        }
+        /* شاشة البداية */
+        #introSplash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0f172a 0%, #020617 100%); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; transition: opacity 0.5s ease; }
+        .splash-title { font-family: 'Cairo', sans-serif; font-size: 38px; font-weight: 900; background: linear-gradient(90deg, #38bdf8, #f43f5e, #eab308); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .splash-loader-circle { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #38bdf8; border-right: 4px solid #f43f5e; border-radius: 50%; animation: spinCircle 0.8s linear infinite; margin-top:20px;}
+        @keyframes spinCircle { 100% { transform: rotate(360deg); } }
 
-        @keyframes flagGradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* شاشة الدخول الاحترافية ISM-HAG Project */
-        #introSplash {
-            position: fixed;
+        /* شريط التبديل العلوي */
+        .system-toggle { 
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            display: flex; 
+            justify-content: center; 
+            gap: 8px; 
+            padding: 10px 8px; 
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 1000; 
+            margin: 0;
         }
 
-        .splash-title {
-            font-family: 'Cairo', sans-serif;
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8, #f43f5e, #eab308);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            overflow: hidden;
-            border-left: 3px solid #38bdf8;
-            white-space: nowrap;
-            margin-bottom: 12px;
-            animation: typing 1.5s steps(20, end), blinkCursor 0.5s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blinkCursor {
-            from, to { border-color: transparent; }
-            50% { border-color: #38bdf8; }
-        }
-
-        .splash-heart {
-            font-size: 36px;
-            color: #ef4444;
-            margin: 10px 0;
-            animation: heartPulse 0.6s ease-in-out infinite;
-        }
-
-        @keyframes heartPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.6)); }
-            50% { transform: scale(1.4); filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.9)); }
-        }
-
-        .splash-sub {
-            font-size: 17px;
-            font-weight: 600;
-            color: #cbd5e1;
-            letter-spacing: 1px;
-            margin-bottom: 22px;
-            text-transform: uppercase;
-        }
-
-        .splash-loader-circle {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #38bdf8;
-            border-right: 4px solid #f43f5e;
-            border-radius: 50%;
-            animation: spinCircle 0.8s linear infinite;
-        }
-
-        @keyframes spinCircle {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* اهتزاز ظهور النظام */
-        .system-shake-enter {
-            animation: shakeEntrance 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-        }
-
-        @keyframes shakeEntrance {
-            0% { transform: scale(0.92) translateY(20px); opacity: 0; }
-            35% { transform: scale(1.02) translateX(-4px); opacity: 0.8; }
-            65% { transform: scale(0.99) translateX(4px); }
-            100% { transform: scale(1) translateX(0); opacity: 1; }
-        }
-
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 15px;
-            width: 100%;
-        }
-
-        .login-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            position: relative;
-            width: 860px;
-            max-width: 100%;
-            min-height: 540px;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(12px);
-            border-radius: 26px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-            overflow: hidden;
-            display: flex;
+        .toggle-btn { 
+            background: rgba(255, 255, 255, 0.12); 
+            border: 1.5px solid rgba(255, 255, 255, 0.25); 
+            color: #fff; 
+            padding: 9px 16px; 
+            border-radius: 20px; 
+            font-size: 13.5px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: all 0.25s ease; 
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 30px;
+            gap: 6px;
         }
 
-        .container h1 {
-            font-size: 29px;
-            font-weight: 800;
-            color: #1e3c72;
-            margin-bottom: 6px;
+        .toggle-btn.active { 
+            background: #fff; 
+            color: #1e3c72; 
+            border-color: #fff; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
         }
 
-        .container p {
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.6;
-            color: #64748b;
+        .main-wrapper { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            align-items: center; 
+            padding: 20px 15px; 
+            width: 100%; 
+            margin: 0;
         }
 
-        form {
-            width: 100%;
-            max-width: 480px;
+        .login-wrapper { width: 100%; display: flex; justify-content: center; margin: 0; }
+        .system-shake-enter { animation: shakeEntrance 0.5s ease both; }
+        @keyframes shakeEntrance { 0% { transform: translateY(15px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+
+        /* الصندوق الرئيسي */
+        .container, .dashboard-container { 
+            position: relative; 
+            width: 860px; 
+            max-width: 100%; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(12px); 
+            border-radius: 24px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); 
+            padding: 28px 24px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
             margin: 0 auto;
-            text-align: center;
         }
 
-        .input-box {
-            position: relative;
-            margin: 18px 0;
+        .dashboard-container { display: none; padding: 24px 20px; }
+        .dashboard-page { display: none; width: 100%; } 
+        .dashboard-page.active { display: block; }
+
+        .container h1 { font-size: 26px; font-weight: 800; color: #1e3c72; margin-bottom: 6px; text-align: center; }
+        .container p { font-size: 13.5px; margin-bottom: 18px; color: #64748b; text-align: center; line-height: 1.5; }
+        form { width: 100%; max-width: 460px; margin: 0 auto; text-align: center; }
+
+        /* حقول الإدخال */
+        .input-box { position: relative; margin: 14px 0; }
+        .input-box input, .big-choice-card select, .big-choice-card input { 
+            width: 100%; 
+            padding: 12px 42px 12px 16px; 
+            background: #f1f5f9; 
+            border-radius: 12px; 
+            border: 2px solid transparent; 
+            outline: none; 
+            font-size: 14px; 
+            color: #1e293b; 
+            font-weight: 600; 
+            transition: 0.3s; 
         }
 
-        .input-box input {
-            width: 100%;
-            padding: 13px 45px 13px 18px;
-            background: #f1f5f9;
-            border-radius: 12px;
-            border: 2px solid transparent;
-            outline: none;
-            font-size: 14.5px;
-            color: #1e293b;
-            font-weight: 600;
-            transition: 0.3s;
-        }
+        .input-box input:focus { border-color: #2563eb; background: #fff; }
+        .input-box i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 17px; color: #2563eb; }
 
-        .input-box input:focus {
-            border-color: #2563eb;
-            background: #fff;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
-        }
-
-        .input-box i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: #2563eb;
-        }
-
-        .btn {
-            width: 100%;
-            height: 48px;
-            background: linear-gradient(90deg, #1e3c72, #2563eb);
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
-            border: none;
-            cursor: pointer;
-            font-size: 15.5px;
-            color: #fff;
-            font-weight: 700;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.4);
-        }
-
-        /* لوحة التحكم */
-        .dashboard-container {
-            width: 100%;
-            max-width: 860px;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.28);
-            padding: 28px 22px;
-            display: none;
-        }
-
-        .dashboard-page {
-            display: none;
-        }
-
-        .dashboard-page.active {
-            display: block;
-        }
-
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-header h2 {
-            font-weight: 900;
-            font-size: 24px;
-            color: #1e3c72;
-        }
-
-        .profile-info {
-            text-align: center;
-            margin-bottom: 20px;
+        /* كابتشا */
+        .progressive-captcha-card {
             background: #f8fafc;
-            padding: 16px;
+            border: 1.5px solid #cbd5e1;
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
+            padding: 14px;
+            margin: 16px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            text-align: center;
         }
 
-        .profile-name {
-            font-size: 22px;
-            font-weight: 800;
-            color: #1e3c72;
-            margin-bottom: 10px;
-        }
-
-        .profile-badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .badge {
-            background: #eef2ff;
-            border: 1px solid #818cf8;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #3730a3;
-        }
-
-        .big-choice-card {
-            background: #f8fafc;
-            border: 2px dashed #3b82f6;
-            padding: 20px;
-            border-radius: 18px;
-            margin-bottom: 20px;
-        }
-
-        .big-choice-card label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-            font-weight: 800;
-            font-size: 15.5px;
-            color: #1e293b;
-        }
-
-        .big-choice-card select, .big-choice-card input {
-            width: 100%;
-            padding: 13px 16px;
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            border-radius: 12px;
-            color: #0f172a;
-            outline: none;
-            margin-bottom: 15px;
-            font-size: 14.5px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        /* عداد الساعات المعتمدة */
-        .hours-counter-box {
-            background: #e0e7ff;
-            border: 2px solid #6366f1;
-            border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 18px;
+        .captcha-top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .captcha-title-badge {
+            font-size: 12px;
             font-weight: 800;
-            color: #3730a3;
+            color: #1e3c72;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-captcha-new {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-captcha-new:hover { background: #eff6ff; }
+
+        .captcha-cells-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+
+        .captcha-cell {
+            width: 42px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cairo', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            background: #e2e8f0;
+            color: #94a3b8;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .captcha-cell.revealed {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+            animation: popIn 0.3s ease;
+        }
+
+        .captcha-cell.solved {
+            background: #dcfce7;
+            color: #15803d;
+            border: 2px solid #22c55e;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .captcha-explain-text {
+            font-size: 12.5px;
+            color: #475569;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .captcha-explain-text b {
+            color: #1e3c72;
+            font-size: 14px;
+        }
+
+        .captcha-input-native {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            text-align: center;
+            letter-spacing: 4px;
+            font-weight: 800;
+            outline: none;
+            background: #fff;
             transition: 0.3s;
         }
+        .captcha-input-native:focus { border-color: #2563eb; }
 
-        .hours-counter-box.max-reached {
-            background: #fee2e2;
-            border-color: #ef4444;
-            color: #991b1b;
+        .input-notice { color: #e11d48; font-weight: bold; display: block; margin-top: -8px; margin-bottom: 10px; font-size: 11.5px; text-align: right; line-height: 1.4; }
+
+        .honest-queue-card {
+            display: none;
+            background: #eff6ff;
+            border: 1.5px solid #93c5fd;
+            border-radius: 12px;
+            padding: 11px 14px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #1e40af;
+            text-align: center;
+            font-weight: 700;
         }
 
+        .btn { 
+            width: 100%; 
+            height: 46px; 
+            background: linear-gradient(90deg, #1e3c72, #2563eb); 
+            border-radius: 12px; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 15px; 
+            color: #fff; 
+            font-weight: 700; 
+            transition: 0.3s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+
+        .btn-register { background: linear-gradient(90deg, #059669, #10b981); }
+        .back-btn { background: #64748b; margin-top: 10px; }
+        .external-link-btn { display: inline-flex; gap: 8px; background: #eff6ff; color: #2563eb; border: 1.5px solid #bfdbfe; padding: 9px 16px; border-radius: 12px; font-size: 13.5px; font-weight: 800; margin-bottom: 15px; }
+
+        .profile-info { text-align: center; margin-bottom: 18px; background: #f8fafc; padding: 14px; border-radius: 16px; border: 1px solid #e2e8f0; width: 100%; }
+        .profile-name { font-size: 20px; font-weight: 800; color: #1e3c72; margin-bottom: 8px; }
+        .profile-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+        .badge { background: #eef2ff; border: 1px solid #818cf8; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #3730a3; }
+        .big-choice-card { background: #f8fafc; border: 2px dashed #3b82f6; padding: 16px; border-radius: 16px; margin-bottom: 18px; width: 100%; }
+        .big-choice-card label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-weight: 800; font-size: 14.5px; color: #1e293b; }
+        
+        .hours-counter-box { background: #e0e7ff; border: 2px solid #6366f1; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: #3730a3; width: 100%; }
+        .hours-counter-box.max-reached { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+
+        /* ==============================================================
+           🌟 تصميم بطاقات المقررات المتطورة (للاختيار ولتقرير القبول) 🌟
+           ============================================================== */
         .checkbox-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            width: 100%;
         }
 
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            padding: 14px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: 0.25s ease;
+        .custom-checkbox, .report-subject-card { 
+            display: flex; 
+            flex-direction: column;
+            background: #ffffff; 
+            border: 2px solid #e2e8f0; 
+            padding: 14px 16px; 
+            border-radius: 14px; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            position: relative;
         }
 
-        .custom-checkbox:hover {
-            background: #eff6ff;
+        .custom-checkbox:hover { 
             border-color: #3b82f6;
+            background: #f8fafc;
         }
 
-        .custom-checkbox input[type="checkbox"] {
-            display: none;
+        .custom-checkbox:has(input[type="checkbox"]:checked) {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
 
-        .checkmark {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #94a3b8;
-            border-radius: 7px;
-            margin-left: 12px;
+        .custom-checkbox input[type="checkbox"] { display: none; }
+
+        /* الجزء العلوي: الاسم يمين + الساعات يسار */
+        .sub-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .sub-name-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            background: #fff;
+            gap: 10px;
+        }
+
+        .checkmark { 
+            width: 22px; 
+            height: 22px; 
+            border: 2px solid #94a3b8; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #fff; 
+            flex-shrink: 0; 
             transition: 0.2s;
         }
 
-        .custom-checkbox input[type="checkbox"]:checked + .checkmark {
-            background: #16a34a;
-            border-color: #16a34a;
+        .custom-checkbox input[type="checkbox"]:checked + .checkmark { 
+            background: #16a34a; 
+            border-color: #16a34a; 
         }
 
-        .custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
-            content: '\f00c';
-            font-family: 'FontAwesome';
-            color: white;
-            font-size: 13px;
+        .custom-checkbox input[type="checkbox"]:checked + .checkmark::after { 
+            content: '\f00c'; 
+            font-family: 'FontAwesome'; 
+            color: white; 
+            font-size: 12px; 
         }
 
-        .subject-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            font-size: 12px;
-            color: #2563eb;
-            font-weight: bold;
-            justify-content: flex-end;
+        .sub-name-text {
+            font-size: 15.5px;
+            font-weight: 800;
+            color: #0f172a;
         }
 
-        .subject-meta span {
-            background: #fff;
-            padding: 4px 8px;
-            border-radius: 7px;
-            border: 1px solid #bfdbfe;
+        .sub-slot-badge {
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            border: 1px solid #c7d2fe;
+            margin-right: 6px;
         }
 
-        .hours-badge {
-            background: #fef3c7 !important;
-            border-color: #fcd34d !important;
-            color: #b45309 !important;
-        }
-
-        .back-btn {
-            background: #64748b;
-            margin-top: 10px;
-        }
-
-        /* تقرير الحالة وعلامتي الصح الخضراء */
-        .status-report-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 18px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            display: none;
-        }
-
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px dashed #e2e8f0;
-        }
-
-        .subject-status-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8fafc;
-            padding: 12px 14px;
-            border-radius: 12px;
-            margin-bottom: 9px;
-            border: 1px solid #e2e8f0;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .double-check-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #dcfce7;
-            color: #15803d;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 900;
-            border: 1px solid #86efac;
-        }
-
-        .double-check-badge.rejected {
-            background: #fee2e2;
-            color: #b91c1c;
-            border-color: #fca5a5;
-        }
-
-        .double-check-badge.pending {
+        .sub-hours-badge {
             background: #fef3c7;
             color: #b45309;
-            border-color: #fde68a;
+            border: 1px solid #fde68a;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
         }
 
-        /* شريط التحقق المدمج */
-        .card-inline-loader {
-            display: none;
-            background: #eff6ff;
-            border: 1.5px solid #bfdbfe;
-            border-radius: 14px;
-            padding: 14px;
-            margin: 15px 0;
-            text-align: center;
-            color: #1e40af;
-            font-weight: 700;
-            font-size: 14px;
-            animation: pulseCard 1.5s infinite;
-        }
-
-        @keyframes pulseCard {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.75; }
-        }
-
-        /* زر الدردشة العائم المحمي والمعدل للموبايل */
-        .live-chat-fab {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            color: #fff;
-            border-radius: 50%;
+        /* الجزء السفلي: الموعد والمحاضرة */
+        .sub-card-bottom {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-            cursor: pointer;
-            z-index: 999;
-            transition: transform 0.2s;
-        }
-
-        .live-chat-fab:hover {
-            transform: scale(1.08);
-        }
-
-        .chat-floating-window {
-            position: fixed;
-            bottom: 80px;
-            left: 15px;
-            width: 340px;
-            max-width: calc(100vw - 30px);
-            height: 440px;
-            background: #efeae2;
-            border-radius: 18px;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .chat-floating-window.active {
-            display: flex;
-        }
-
-        .chat-header-float {
-            background: #075e54;
-            color: #fff;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .chat-body-float {
-            flex: 1;
-            padding: 12px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
             gap: 8px;
+            padding-top: 10px;
+            border-top: 1px dashed #e2e8f0;
+            width: 100%;
         }
 
-        .msg-bubble {
-            max-width: 82%;
-            padding: 8px 12px;
-            border-radius: 10px;
+        .time-pill-tag {
+            background: #f1f5f9;
+            color: #1e40af;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
             font-size: 13px;
-            line-height: 1.35;
-        }
-
-        .msg-bubble.student {
-            background: #dcf8c6;
-            align-self: flex-start;
-            color: #111;
-        }
-
-        .msg-bubble.admin {
-            background: #ffffff;
-            align-self: flex-end;
-            color: #111;
-        }
-
-        .chat-footer-float {
-            padding: 8px;
-            background: #f0f0f0;
-            display: flex;
-            gap: 6px;
-        }
-
-        .chat-footer-float input {
-            flex: 1;
-            padding: 9px 14px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            outline: none;
-            font-size: 13px;
-        }
-
-        .chat-footer-float button {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #128c7e;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .solidarity-badge {
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: linear-gradient(90deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
         }
 
-        footer {
-            background: rgba(15, 23, 42, 0.9);
-            color: #94a3b8;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 12px;
-        }
+        /* بطاقة تقرير القبول المحسنة */
+        .status-report-card { background: #ffffff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 16px; margin-top: 18px; display: none; width: 100%; }
+        .double-check-badge { display: inline-flex; align-items: center; background: #dcfce7; color: #15803d; padding: 5px 12px; border-radius: 16px; font-size: 13px; font-weight: 900; }
+        .double-check-badge.rejected { background: #fee2e2; color: #b91c1c; }
+        .double-check-badge.pending { background: #fef3c7; color: #b45309; }
 
-        /* نافذة الحوار ثلاثية الأبعاد */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
-        }
+        .card-inline-loader { display: none; background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 12px; margin: 12px 0; text-align: center; color: #1e40af; font-weight: 700; font-size: 13.5px; }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        /* الدردشة والشارات */
+        .live-chat-fab { position: fixed; bottom: 18px; left: 18px; width: 50px; height: 50px; background: linear-gradient(135deg, #25d366, #128c7e); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4); cursor: pointer; z-index: 999; }
+        .chat-floating-window { position: fixed; bottom: 75px; left: 12px; width: 330px; max-width: calc(100vw - 24px); height: 420px; background: #efeae2; border-radius: 16px; display: none; flex-direction: column; overflow: hidden; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.3);}
+        .chat-floating-window.active { display: flex; }
+        .chat-header-float { background: #075e54; color: #fff; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 13.5px; }
+        .chat-body-float { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .msg-bubble { max-width: 82%; padding: 8px 12px; border-radius: 10px; font-size: 13px; }
+        .msg-bubble.student { background: #dcf8c6; align-self: flex-start; }
+        .msg-bubble.admin { background: #ffffff; align-self: flex-end; }
+        .chat-footer-float { padding: 8px; background: #f0f0f0; display: flex; gap: 6px; }
+        .chat-footer-float input { flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid #ccc; outline: none; font-size: 13px; }
+        .chat-footer-float button { width: 36px; height: 36px; border-radius: 50%; background: #128c7e; color: white; border: none; }
+        .solidarity-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(90deg, #1e293b, #0f172a); border: 1px solid #334155; padding: 4px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 700; color: #fff; }
 
-        .modal-content {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px 20px;
-            width: 88%;
-            max-width: 380px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
+        /* نافذة الحوار 3D */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.65); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: #fff; border-radius: 18px; padding: 22px 18px; width: 90%; max-width: 360px; text-align: center; }
 
-        /* ميديا كويري لتصغير كل شيء في الهواتف وإلغاء الكروت البيضاء الضخمة */
         @media screen and (max-width: 768px) {
-            body {
-                padding-bottom: 70px;
-            }
-
-            .main-wrapper {
-                padding: 10px 8px;
-            }
-
+            body { padding: 0 !important; margin: 0 !important; }
+            .main-wrapper, .login-wrapper { padding: 0 !important; margin: 0 !important; width: 100% !important; }
             .container, .dashboard-container {
-                width: 100% !important;
-                border-radius: 16px !important;
-                padding: 18px 12px !important;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important;
-                min-height: auto !important;
-                margin: 0 !important;
+                width: 100% !important; max-width: 100% !important; margin: 0 !important; border-radius: 0 !important;
+                padding: 16px 12px 30px 12px !important; box-shadow: none !important; border: none !important; min-height: calc(100vh - 55px);
             }
+            .system-toggle { padding: 6px 4px !important; gap: 4px !important; border-radius: 0 !important; }
+            .toggle-btn { flex: 1 1 0 !important; padding: 8px 3px !important; font-size: 11.5px !important; border-radius: 10px !important; text-align: center; white-space: nowrap; justify-content: center; }
+            .toggle-btn i { display: none; }
+            .container h1 { font-size: 21px !important; }
+            .container p { font-size: 12.5px !important; margin-bottom: 14px !important; }
+            .profile-name { font-size: 18px !important; }
+            .btn { height: 44px !important; font-size: 14px !important; }
+            .chat-floating-window { bottom: 65px; left: 6px; width: calc(100vw - 12px); }
+            .captcha-cell { width: 34px !important; height: 40px !important; font-size: 17px !important; }
 
-            .container h1, .dashboard-header h2 {
-                font-size: 21px !important;
-            }
-
-            .container p {
-                font-size: 13px !important;
-                margin-bottom: 14px !important;
-            }
-
-            .profile-name {
-                font-size: 18px !important;
-            }
-
-            .badge {
-                font-size: 11.5px !important;
-                padding: 4px 10px !important;
-            }
-
-            .input-box input, .big-choice-card select, .big-choice-card input {
-                padding: 11px 40px 11px 14px !important;
-                font-size: 13.5px !important;
-            }
-
-            .btn {
-                height: 44px !important;
-                font-size: 14px !important;
-            }
-
-            .custom-checkbox {
-                padding: 11px 12px !important;
-            }
-
-            .subject-meta span {
-                font-size: 10.5px !important;
-                padding: 3px 6px !important;
-            }
-
-            .hours-counter-box {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .live-chat-fab {
-                bottom: 15px;
-                left: 15px;
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
-            }
-
-            .chat-floating-window {
-                bottom: 70px;
-                left: 8px;
-                width: calc(100vw - 16px);
-                height: 400px;
-            }
+            .sub-name-text { font-size: 14px !important; }
+            .sub-hours-badge { font-size: 11px !important; padding: 3px 8px !important; }
+            .time-pill-tag { font-size: 12px !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- شاشة البداية ISM-HAG Project بتأثير سريع ومحسن -->
+    <!-- شاشة البداية -->
     <div id="introSplash">
         <div class="splash-title">ISM-HAG Project</div>
-        <div class="splash-heart"><i class="fa-solid fa-heart"></i></div>
-        <div class="splash-sub">Story of hard work</div>
         <div class="splash-loader-circle"></div>
     </div>
 
-    <div class="main-wrapper">
-        <div class="login-wrapper" id="loginWrapper">
-            <div class="container system-shake-enter" id="sliderContainer">
-                <form onsubmit="event.preventDefault(); fetchAndVerifyStudent();">
-                    <div style="margin-bottom:12px;">
-                        <span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span>
-                    </div>
-                    
-                    <h1>البوابة الأكاديمية</h1>
-                    <p>تسجيل الدخول بالرقم القومي والبريد الرسمي لكلية العلوم</p>
+    <!-- شريط الأزرار العلوي -->
+    <div class="system-toggle" id="systemToggle">
+        <button id="btnToggleOld" class="toggle-btn active" onclick="switchSystem('old')"><i class="fa-solid fa-book-open"></i> تسجيل المقررات</button>
+        <button id="btnToggleNew" class="toggle-btn" onclick="switchSystem('new')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</button>
+        <button id="btnToggleRegister" class="toggle-btn" onclick="switchSystem('register')"><i class="fa-solid fa-user-plus"></i> إنشاء حساب</button>
+    </div>
 
-                     <!-- الزر الجديد للرابط الخارجي (ضع رابطك بدلاً من الرابط المكتوب) -->
+    <div class="main-wrapper">
+
+        <!-- ======================= النظام الأول (تسجيل المقررات الأساسي) ======================= -->
+        <div class="login-wrapper system-shake-enter" id="loginWrapperOld">
+            <div class="container">
+                <form onsubmit="event.preventDefault(); fetchAndVerifyStudent();">
+                    <div style="margin-bottom:10px;"><span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span></div>
+                    <h1>البوابة الأكاديمية</h1>
+                    <p>تسجيل الدخول بالرقم القومي والبريد الإلكتروني للكلية أو الحساب المسجل</p>
                     <a href="https://hassandiab2005.githup.io/sciencestu" target="_blank" class="external-link-btn">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>للحصول على البريد الجامعي أضغط هنا 
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> للحصول على البريد الجامعي أضغط هنا 
                     </a>
                     
-
-                    <div class="input-box">
-                        <input type="text" id="natID" placeholder="الرقم القومي (14 رقم)" maxlength="14" required>
-                        <i class="fa-regular fa-id-card"></i>
+                    <div class="input-box"><input type="text" id="natID" placeholder="الرقم القومي (14 رقم)" maxlength="14" required><i class="fa-regular fa-id-card"></i></div>
+                    <div class="input-box"><input type="email" id="userEmail" placeholder="البريد الإلكتروني المسجل" required><i class="fa-regular fa-envelope"></i></div>
+                    
+                    <!-- كابتشا تتابعية ذكية للنظام الأساسي -->
+                    <div class="progressive-captcha-card">
+                        <div class="captcha-top-bar">
+                            <span class="captcha-title-badge"><i class="fa-solid fa-shield-halved text-primary"></i> التحقق البشري التفاعلي</span>
+                            <button type="button" class="btn-captcha-new" onclick="initProgressiveCaptcha('old')"><i class="fa-solid fa-arrows-rotate"></i> رمز جديد</button>
+                        </div>
+                        <div class="captcha-cells-row" id="captchaCellsOld"></div>
+                        <p class="captcha-explain-text" id="captchaHintOld">اكتب الرقم الأول ليظهر لك الرقم التالي...</p>
+                        <input type="text" id="captchaInputOld" class="captcha-input-native" placeholder="اكتب الأرقام هنا بالترتيب..." maxlength="6" oninput="handleCaptchaTyping('old', this)" autocomplete="off">
                     </div>
 
-                    <div class="input-box">
-                        <input type="email" id="userEmail" placeholder="البريد الإلكتروني (@science.aun.edu.eg)" required>
-                        <i class="fa-regular fa-envelope"></i>
-                    </div>
+                    <div class="honest-queue-card" id="queueNoticeOld"></div>
 
-                    <!-- لودر الفحص المدمج والجميل داخل البطاقة -->
-                    <div id="inlineCardLoader" class="card-inline-loader">
-                        <i class="fa-solid fa-spinner fa-spin" style="margin-left:8px;"></i>
-                        <span id="inlineLoaderText">جاري التحقق من السجلات والتحقق من الصلاحيات...</span>
-                    </div>
+                    <div id="inlineCardLoaderOld" class="card-inline-loader"><i class="fa-solid fa-spinner fa-spin"></i> جاري البحث في السجلات وقاعدة البيانات...</div>
+                    <button type="submit" class="btn" id="submitBtnOld"><i class="fa-solid fa-right-to-bracket"></i> استعلام ودخول</button>
 
-                    <button type="submit" class="btn" id="submitBtn"><i class="fa-solid fa-right-to-bracket"></i> استعلام ودخول</button>
+                    <div style="margin-top: 15px;">
+                        <a href="javascript:void(0)" onclick="switchSystem('register')" style="color: #2563eb; font-weight: 700; font-size: 13.5px;"><i class="fa-solid fa-user-plus"></i> ليس لديك حساب؟ اضغط هنا لإنشاء حساب جديد</a>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <!-- لوحة التحكم للطالب -->
-        <div class="dashboard-container" id="dashboardContainer">
-            <!-- الصفحة الأولى: اختيار التخصص والرقم الجامعي -->
+        <!-- ======================= النظام الثاني (بوابة استعلام الطالب) ======================= -->
+        <div class="login-wrapper system-shake-enter" id="loginWrapperNew" style="display:none;">
+            <div class="container">
+                <form onsubmit="event.preventDefault(); loginNewSystem();">
+                    <div style="margin-bottom:10px;"><span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span></div>
+                    <h1>بوابة الطالب والاستعلام</h1>
+                    <p>سجل دخول بحساب الجامعة لاختيار التخصص والمقررات والدردشة</p>
+
+                    <div class="input-box"><input type="text" id="newUsername" placeholder="اسم المستخدم (Username)" required><i class="fa-regular fa-user"></i></div>
+                    <div class="input-box"><input type="password" id="newPassword" placeholder="كلمة المرور (Password)" required><i class="fa-solid fa-lock"></i></div>
+                    
+                    <!-- كابتشا تتابعية ذكية لبوابة الطالب -->
+                    <div class="progressive-captcha-card">
+                        <div class="captcha-top-bar">
+                            <span class="captcha-title-badge"><i class="fa-solid fa-shield-halved text-primary"></i> التحقق البشري التفاعلي</span>
+                            <button type="button" class="btn-captcha-new" onclick="initProgressiveCaptcha('new')"><i class="fa-solid fa-arrows-rotate"></i> رمز جديد</button>
+                        </div>
+                        <div class="captcha-cells-row" id="captchaCellsNew"></div>
+                        <p class="captcha-explain-text" id="captchaHintNew">اكتب الرقم الأول ليظهر لك الرقم التالي...</p>
+                        <input type="text" id="captchaInputNew" class="captcha-input-native" placeholder="اكتب الأرقام هنا بالترتيب..." maxlength="6" oninput="handleCaptchaTyping('new', this)" autocomplete="off">
+                    </div>
+
+                    <div class="honest-queue-card" id="queueNoticeNew"></div>
+
+                    <div id="inlineCardLoaderNew" class="card-inline-loader"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق من السيرفر الجامعي...</div>
+                    <button type="submit" class="btn" id="submitBtnNew"><i class="fa-solid fa-right-to-bracket"></i> دخول لنظام التسجيل</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ======================= النظام الثالث (إنشاء حساب جديد للطلاب) ======================= -->
+        <div class="login-wrapper system-shake-enter" id="loginWrapperRegister" style="display:none;">
+            <div class="container">
+                <form onsubmit="event.preventDefault(); registerNewStudent();">
+                    <div style="margin-bottom:10px;"><span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span></div>
+                    <h1>إنشاء حساب طالب جديد</h1>
+                    <p>أدخل بياناتك كاملة لإنشاء ملف أكاديمي والتسجيل في المقررات</p>
+
+                    <div class="input-box">
+                        <input type="text" id="regName" placeholder="الاسم ثلاثي أو رباعي بالكامل" required>
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="regNatID" placeholder="الرقم القومي (14 رقم)" maxlength="14" required>
+                        <i class="fa-regular fa-id-card"></i>
+                    </div>
+                    <span class="input-notice">* تنبيه: يرجى حفظ هذا الرقم القومي بدقة حيث ستستخدمه دائماً لتسجيل الدخول</span>
+
+                    <div class="input-box">
+                        <input type="email" id="regEmail" placeholder="البريد الإلكتروني (أي بريد خاص بك)" required>
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <span class="input-notice">* تنبيه: يرجى حفظ هذا البريد الإلكتروني جيداً حيث ستستخدمه في تسجيل الدخول</span>
+
+                    <div class="input-box">
+                        <input type="text" id="regFaculty" placeholder="اسم الكلية (مثال: كلية العلوم (جامعة أسيوط))" value="كلية العلوم (جامعة أسيوط)" required>
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="regPhase" placeholder="التخصص / الشعبة الأكاديمية (مثال: كيمياء / فيزياء / علوم حاسب)" required>
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="regExtraID" placeholder="الرقم الأكاديمي / الكود الجامعي (أرقام)" required>
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+
+                    <!-- كابتشا تتابعية ذكية لإنشاء الحساب -->
+                    <div class="progressive-captcha-card">
+                        <div class="captcha-top-bar">
+                            <span class="captcha-title-badge"><i class="fa-solid fa-shield-halved text-primary"></i> التحقق البشري التفاعلي</span>
+                            <button type="button" class="btn-captcha-new" onclick="initProgressiveCaptcha('reg')"><i class="fa-solid fa-arrows-rotate"></i> رمز جديد</button>
+                        </div>
+                        <div class="captcha-cells-row" id="captchaCellsReg"></div>
+                        <p class="captcha-explain-text" id="captchaHintReg">اكتب الرقم الأول ليظهر لك الرقم التالي...</p>
+                        <input type="text" id="captchaInputReg" class="captcha-input-native" placeholder="اكتب الأرقام هنا بالترتيب..." maxlength="6" oninput="handleCaptchaTyping('reg', this)" autocomplete="off">
+                    </div>
+
+                    <div class="honest-queue-card" id="queueNoticeReg"></div>
+
+                    <div id="inlineCardLoaderRegister" class="card-inline-loader"><i class="fa-solid fa-spinner fa-spin"></i> جاري فحص السجلات وإنشاء الحساب...</div>
+                    <button type="submit" class="btn btn-register" id="submitBtnRegister"><i class="fa-solid fa-user-check"></i> إنشاء الحساب والمتابعة للتسجيل</button>
+                    
+                    <div style="margin-top: 15px;">
+                        <a href="javascript:void(0)" onclick="switchSystem('old')" style="color: #64748b; font-weight: 700; font-size: 13.5px;"><i class="fa-solid fa-arrow-right"></i> لديك حساب بالفعل؟ تسجيل الدخول</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ======================= لوحة التحكم الموحدة (Dashboard) ======================= -->
+        <div class="dashboard-container" id="unifiedDashboard">
+            
             <div id="portalPage" class="dashboard-page active">
                 <div class="dashboard-header">
-                    <div style="margin-bottom:10px; text-align:center;">
-                        <span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span>
-                    </div>
-                    <h2>البيانات الأكاديمية للطالب</h2>
+                    <div style="margin-bottom:8px;"><span class="solidarity-badge">تحيا مصر 🇪🇬 &nbsp;|&nbsp; حرة يا فلسطين 🇵🇸</span></div>
+                    <h2 style="font-size: 20px; font-weight: 800; color: #1e3c72; text-align: center; margin-bottom: 12px;">البيانات الأكاديمية للطالب</h2>
                 </div>
 
                 <div class="profile-info">
@@ -856,480 +636,921 @@
                         <span id="profileDep" class="badge">القسم التخصصي</span>
                         <span id="profileFaculty" class="badge">كلية العلوم</span>
                     </div>
-                    <div class="details-text" id="additionalDetails" style="margin-top: 8px; font-size: 13px; color:#475569;"></div>
+                    <div class="details-text" id="additionalDetails" style="margin-top: 8px; font-size: 12.5px; color:#475569;"></div>
                 </div>
 
                 <div class="big-choice-card">
                     <label for="takhsosSelect"><i class="fa-solid fa-graduation-cap" style="color:#2563eb;"></i> اختر التخصص الدراسي المطلوب:</label>
-                    <select id="takhsosSelect">
-                        <option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>
-                    </select>
-
-                    <label for="studentExtraID"><i class="fa-solid fa-id-badge" style="color:#2563eb;"></i> رقم الهوية الجامعي (ID):</label>
-                    <input type="text" id="studentExtraID" placeholder="أدخل رقمك الأكاديمي / الكود الجامعي المكون من أرقام يدوياً...">
+                    <select id="takhsosSelect"><option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option></select>
+                    <label for="studentExtraID" style="margin-top:10px;"><i class="fa-solid fa-id-badge" style="color:#2563eb;"></i> رقم الهوية الجامعي (ID):</label>
+                    <input type="text" id="studentExtraID" placeholder="أدخل الكود الجامعي...">
                 </div>
 
                 <button class="btn" onclick="proceedToSubjects()"><i class="fa-solid fa-arrow-left"></i> متابعة واختيار المواد الدراسية</button>
-                <button class="btn back-btn" onclick="logout()"><i class="fa-solid fa-power-off"></i> تسجيل الخروج</button>
+                <button class="btn back-btn" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> تسجيل الخروج</button>
             </div>
 
-            <!-- الصفحة الثانية: اختيار المواد والتسجيل -->
             <div id="subjectPage" class="dashboard-page">
-                <div class="dashboard-header">
-                    <h2>المقررات الدراسية وحالة القبول</h2>
-                </div>
-
+                <div class="dashboard-header"><h2 style="font-size: 20px; font-weight: 800; color: #1e3c72; text-align: center; margin-bottom: 12px;">المقررات الدراسية وحالة القبول</h2></div>
                 <div class="profile-info">
                     <div class="profile-badges">
-                        <span class="badge">التخصص: <b id="displayTakhsos" style="color:#1e3c72; margin-right:4px;">--</b></span>
-                        <span class="badge">الرقم الأكاديمي: <b id="displayID" style="color:#1e3c72; margin-right:4px;">--</b></span>
+                        <span class="badge">التخصص: <b id="displayTakhsos">--</b></span>
+                        <span class="badge">الرقم الأكاديمي: <b id="displayID">--</b></span>
                     </div>
                 </div>
 
-                <div class="input-group" id="selectionSection">
-                    
-                    <!-- عداد الساعات المعتمدة -->
+                <div id="selectionSection">
                     <div id="hoursCounterBox" class="hours-counter-box">
-                        <span>إجمالي الساعات المحددة:</span>
-                        <span><b id="currentHoursDisplay" style="font-size: 18px;">0</b> / 19 ساعة</span>
+                        <span>إجمالي الساعات المحددة:</span><span><b id="currentHoursDisplay" style="font-size: 17px;">0</b> / 19 ساعة</span>
                     </div>
-
-                    <label style="font-weight: 800; font-size: 15px; margin-bottom: 10px; display: block; color: #1e293b;">حدد المقررات التي ترغب بتسجيلها:</label>
-                    <div class="checkbox-container" id="subjectsContainer"></div>
                     
+                    <label style="font-weight: 800; font-size: 14.5px; margin-bottom: 10px; display: block; color: #1e293b;">
+                        <i class="fa-solid fa-layer-group text-primary"></i> حدد المقررات التي ترغب بتسجيلها (إذا كان للمادة أكثر من موعد، يمكنك اختيار موعد واحد فقط):
+                    </label>
+
+                    <!-- قائمة بطاقات المقررات الدراسية -->
+                    <div class="checkbox-container" id="subjectsContainer"></div>
+
                     <button class="btn" onclick="saveFinalRegistration()"><i class="fa-solid fa-floppy-disk"></i> تأكيد وحفظ المواد</button>
                     <button class="btn back-btn" onclick="switchDashboardPage('portalPage')"><i class="fa-solid fa-pen-to-square"></i> رجوع لتعديل التخصص</button>
                 </div>
 
-                <!-- بطاقة تقرير الاعتماد والقبول -->
+                <!-- 🌟 بطاقة تقرير القبول المحسنة ببطاقات كاملة التفاصيل 🌟 -->
                 <div class="status-report-card" id="statusReportCard">
                     <div class="status-header">
                         <div>
-                            <h3 style="font-size:18px; font-weight:800; color:#1e3c72;" id="reportStudentName">اسم الطالب</h3>
-                            <p style="color:#64748b; font-size:13px; margin-top:4px;">
-                                التخصص: <b id="reportStudentTakhsos" style="color:#0f172a;">--</b> &nbsp;|&nbsp; الرقم الأكاديمي: <b id="reportStudentID" style="color:#0f172a;">--</b>
-                            </p>
+                            <h3 style="font-size:16.5px; font-weight:800; color:#1e3c72;" id="reportStudentName">اسم الطالب</h3>
+                            <p style="color:#64748b; font-size:12px; margin-top:4px;">التخصص: <b id="reportStudentTakhsos">--</b> | الرقم الأكاديمي: <b id="reportStudentID">--</b></p>
                         </div>
-                        <div>
-                            <span id="reportOverallStatus" class="double-check-badge pending">قيد المراجعة ⏳</span>
-                        </div>
+                        <div><span id="reportOverallStatus" class="double-check-badge pending">قيد المراجعة ⏳</span></div>
                     </div>
+                    
+                    <h4 style="margin: 14px 0 10px 0; font-size:14.5px; color:#1e3c72; font-weight:800;">
+                        <i class="fa-solid fa-clipboard-check"></i> تفاصيل المقررات المعتمدة والمواعيد والساعات:
+                    </h4>
 
-                    <h4 style="margin-bottom:10px; color:#1e293b; font-size:14.5px;">حالة المقررات المسجلة:</h4>
-                    <div id="reportSubjectsList"></div>
+                    <!-- هنا تظهر بطاقات المقررات المعتمدة بكامل تفاصيلها -->
+                    <div class="checkbox-container" id="reportSubjectsList"></div>
+                    
+                    <button class="btn back-btn" onclick="location.reload()" style="margin-top:16px;"><i class="fa-solid fa-power-off"></i> خروج</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- زر ونافذة الدردشة المباشرة -->
-    <div class="live-chat-fab" onclick="toggleFloatingChat()">
-        <i class="fa-brands fa-whatsapp"></i>
-    </div>
-
+    <!-- الدردشة المباشرة -->
+    <div class="live-chat-fab" onclick="toggleFloatingChat()"><i class="fa-brands fa-whatsapp"></i></div>
     <div class="chat-floating-window" id="chatFloatingWindow">
-        <div class="chat-header-float">
-            <span><i class="fa-solid fa-comments"></i> الدعم الأكاديمي المباشر</span>
-            <i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleFloatingChat()"></i>
-        </div>
-
-        <div id="chatIsolatedPortal" style="padding: 20px; text-align: center; background:#fff; height:100%; display:flex; flex-direction:column; justify-content:center;">
-            <h3 style="font-size:16px; color:#075e54; margin-bottom:8px;">🔐 الدخول المباشر للدردشة</h3>
-            <p style="font-size:12px; color:#666; margin-bottom:12px;">أكد بياناتك الجامعية لاستعادة المحادثة</p>
-            <input type="text" id="chatLoginNatID" placeholder="الرقم القومي" style="padding:9px; border:1px solid #cbd5e1; border-radius:8px; margin-bottom:8px; font-size:13px; text-align:center;">
-            <input type="email" id="chatLoginEmail" placeholder="البريد الجامعي" style="padding:9px; border:1px solid #cbd5e1; border-radius:8px; margin-bottom:8px; font-size:13px; text-align:center;">
-            <input type="text" id="chatLoginExtraID" placeholder="الرقم الأكاديمي (ID)" style="padding:9px; border:1px solid #cbd5e1; border-radius:8px; margin-bottom:12px; font-size:13px; text-align:center;">
-            <button onclick="authenticateChatUser()" style="padding:10px; background:#075e54; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer;">دخول للمحادثة</button>
-        </div>
-
-        <div class="chat-body-float" id="studentChatBodyFloat" style="display:none;"></div>
-        <div class="chat-footer-float" id="studentChatFooterFloat" style="display:none;">
+        <div class="chat-header-float"><span><i class="fa-solid fa-comments"></i> الدعم الأكاديمي</span><i class="fa-solid fa-xmark" style="cursor:pointer;" onclick="toggleFloatingChat()"></i></div>
+        <div class="chat-body-float" id="studentChatBodyFloat"></div>
+        <div class="chat-footer-float">
             <input type="text" id="studentChatInputFloat" placeholder="اكتب رسالتك للمسؤول..." onkeypress="if(event.key==='Enter') sendStudentMessage()">
             <button onclick="sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; جميع الحقوق محفوظة - البوابة الأكاديمية لكلية العلوم 2026 | ISM-HAG Project</p>
-    </footer>
-
-    <!-- نافذة الحوار ثلاثية الأبعاد -->
+    <!-- نافذة الحوار 3D -->
     <div id="dynamic3DModal" class="modal-overlay">
         <div class="modal-content">
-            <div id="modalIcon" style="font-size:45px; margin-bottom:10px;">🚫</div>
-            <h3 id="modalTitle" style="font-size:19px; margin-bottom:10px;">تنبيه</h3>
-            <p id="modalMessage" style="font-size:13.5px; color:#475569; margin-bottom:18px; line-height:1.5;">رسالة</p>
+            <div id="modalIcon" style="font-size:42px; margin-bottom:8px;">🚫</div>
+            <h3 id="modalTitle" style="font-size:18px; margin-bottom:8px;">تنبيه</h3>
+            <p id="modalMessage" style="font-size:13px; color:#475569; margin-bottom:16px; line-height:1.5;">رسالة</p>
             <button class="btn" id="modalBtn" onclick="close3DDialog()">حسناً</button>
         </div>
     </div>
 
     <script>
-        // إخفاء شاشة البداية ISM-HAG Project بسرعة وسلاسة (تم تقليل الوقت بشكل ملحوظ)
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('introSplash');
-                splash.style.opacity = '0';
-                setTimeout(() => { splash.style.display = 'none'; }, 500);
-            }, 1200);
+        window.addEventListener('DOMContentLoaded', () => { 
+            setTimeout(() => { document.getElementById('introSplash').style.display = 'none'; }, 1000); 
+            initProgressiveCaptcha('old');
+            initProgressiveCaptcha('new');
+            initProgressiveCaptcha('reg');
         });
 
-        let globalStudentData = {};
-        let dynamicSubjectsMap = {};
-        let isChatLoggedIn = false;
-        let chatInterval = null;
+        // ==============================================================
+        // 🌟 1. نظام الكابتشا التتابعية 🌟
+        // ==============================================================
+        const captchaSecretCodes = { old: '', new: '', reg: '' };
 
-        const WORKER_API_URL = 'https://lingering-morning-1c34.hstudy3rd.workers.dev';
+        function initProgressiveCaptcha(type) {
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += Math.floor(Math.random() * 10).toString();
+            }
+            captchaSecretCodes[type] = code;
 
-        function showCardLoader(text) {
-            const loader = document.getElementById('inlineCardLoader');
-            document.getElementById('inlineLoaderText').innerText = text || "جاري التحقق من السجلات والتحقق من الصلاحيات...";
-            loader.style.display = 'block';
+            const inputElem = getCaptchaInputElem(type);
+            if (inputElem) inputElem.value = '';
+
+            renderCaptchaCells(type, 0);
         }
 
-        function hideCardLoader() {
-            document.getElementById('inlineCardLoader').style.display = 'none';
+        function getCaptchaInputElem(type) {
+            if (type === 'old') return document.getElementById('captchaInputOld');
+            if (type === 'new') return document.getElementById('captchaInputNew');
+            if (type === 'reg') return document.getElementById('captchaInputReg');
+            return null;
         }
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
+        function renderCaptchaCells(type, currentTypedLen) {
+            const code = captchaSecretCodes[type] || '123456';
+            let containerId = 'captchaCellsOld';
+            let hintId = 'captchaHintOld';
 
-            try {
-                // تم إصلاح مشكلة الـ CORS و NetworkError بإزالة الباراميترات الزائدة وإضافة header
-                const res = await fetch(`${WORKER_API_URL}?action=getTakhsos`, {
-                    method: 'GET',
-                    mode: 'cors',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.takhsos) {
-                        dynamicSubjectsMap = data.takhsos;
+            if (type === 'new') { containerId = 'captchaCellsNew'; hintId = 'captchaHintNew'; }
+            if (type === 'reg') { containerId = 'captchaCellsReg'; hintId = 'captchaHintReg'; }
 
-                        const select = document.getElementById('takhsosSelect');
-                        select.innerHTML = '<option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>';
+            const container = document.getElementById(containerId);
+            const hintElem = document.getElementById(hintId);
+            if (!container || !hintElem) return;
 
-                        const names = {
-                            "physics": "الفيزياء (Physics)",
-                            "chemistry": "الكيمياء (Chemistry)",
-                            "mathematics": "الرياضيات (Mathematics)",
-                            "computer_science": "علوم الحاسب (Computer Science)",
-                            "biology": "علم الأحياء (Biology)"
-                        };
+            container.innerHTML = '';
+            const revealUntilIndex = Math.min(currentTypedLen, 5);
 
-                        for (let key in dynamicSubjectsMap) {
-                            const opt = document.createElement('option');
-                            opt.value = key;
-                            opt.textContent = names[key] || key;
-                            select.appendChild(opt);
-                        }
+            for (let i = 0; i < 6; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'captcha-cell';
+
+                if (i < currentTypedLen) {
+                    cell.classList.add('solved');
+                    cell.innerText = code[i];
+                } else if (i === revealUntilIndex) {
+                    cell.classList.add('revealed');
+                    cell.innerText = code[i];
+                } else {
+                    cell.innerText = 'X';
+                }
+                container.appendChild(cell);
+            }
+
+            if (currentTypedLen >= 6) {
+                hintElem.innerHTML = `<span style="color:#15803d; font-weight:800;"><i class="fa-solid fa-circle-check"></i> ممتاز! تم التحقق بنجاح من الرمز كاملاً.</span>`;
+            } else {
+                const nextExpectedNum = code[revealUntilIndex];
+                hintElem.innerHTML = `<i class="fa-solid fa-hand-point-down text-primary"></i> اكتب الرقم <b>(${nextExpectedNum})</b> في الخانة ليظهر لك الرقم الذي يليه (${getMaskedPreview(code, revealUntilIndex)})`;
+            }
+        }
+
+        function getMaskedPreview(code, visibleIdx) {
+            let res = '';
+            for (let i = 0; i < 6; i++) {
+                if (i <= visibleIdx) res += code[i];
+                else res += 'X';
+            }
+            return res;
+        }
+
+        function handleCaptchaTyping(type, inputElem) {
+            const code = captchaSecretCodes[type];
+            let val = inputElem.value.replace(/\D/g, '');
+            inputElem.value = val;
+
+            let correctCount = 0;
+            for (let i = 0; i < val.length; i++) {
+                if (val[i] === code[i]) {
+                    correctCount++;
+                } else {
+                    inputElem.value = val.substring(0, i);
+                    const hintElem = document.getElementById(type === 'old' ? 'captchaHintOld' : (type === 'new' ? 'captchaHintNew' : 'captchaHintReg'));
+                    if (hintElem) {
+                        hintElem.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> الرقم الذي كتبته خطأ! انظر للرقم المطلوب في المربع المكشوف.</span>`;
+                    }
+                    return;
+                }
+            }
+
+            renderCaptchaCells(type, correctCount);
+        }
+
+        function isCaptchaSolved(type) {
+            const inputElem = getCaptchaInputElem(type);
+            const val = inputElem ? inputElem.value.trim() : '';
+            return val === captchaSecretCodes[type];
+        }
+
+        // ==============================================================
+        // 🌟 2. طابور الانتظار الحقيقي وإعادة الإرسال 🌟
+        // ==============================================================
+        class HonestQueue {
+            constructor() {
+                this.pendingQueue = [];
+                this.isBusy = false;
+            }
+
+            async add(taskFn, noticeElem) {
+                if (!this.isBusy && this.pendingQueue.length === 0) {
+                    this.isBusy = true;
+                    if (noticeElem) {
+                        noticeElem.style.display = 'block';
+                        noticeElem.innerHTML = `<i class="fa-solid fa-bolt text-success"></i> لا يوجد انتظار، يتم تنفيذ طلبك مباشرة الآن...`;
+                    }
+                    try {
+                        return await taskFn();
+                    } finally {
+                        this.isBusy = false;
+                        if (noticeElem) noticeElem.style.display = 'none';
+                        this.processNext();
                     }
                 }
-            } catch (e) {
-                console.error("Error loading takhsos DB:", e);
-            } finally {
-                submitBtn.disabled = false;
+
+                return new Promise((resolve, reject) => {
+                    const item = { taskFn, noticeElem, resolve, reject };
+                    this.pendingQueue.push(item);
+                    this.updateQueueDisplay();
+                });
             }
-        });
+
+            updateQueueDisplay() {
+                this.pendingQueue.forEach((item, index) => {
+                    if (item.noticeElem) {
+                        item.noticeElem.style.display = 'block';
+                        const myTurn = index + 1;
+                        const totalWaiting = this.pendingQueue.length;
+                        item.noticeElem.innerHTML = `
+                            <i class="fa-solid fa-users-line"></i> 
+                            طابور الانتظار الفعلي: <b>أنت في الترتيب رقم (${myTurn})</b> من أصل (${totalWaiting}) طلبات قيد التنفيذ...
+                        `;
+                    }
+                });
+            }
+
+            async processNext() {
+                if (this.pendingQueue.length === 0) {
+                    this.isBusy = false;
+                    return;
+                }
+
+                this.isBusy = true;
+                const nextItem = this.pendingQueue.shift();
+                this.updateQueueDisplay();
+
+                if (nextItem.noticeElem) {
+                    nextItem.noticeElem.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> حان دورك الآن! جاري المعالجة...`;
+                }
+
+                try {
+                    const res = await nextItem.taskFn();
+                    if (nextItem.noticeElem) nextItem.noticeElem.style.display = 'none';
+                    nextItem.resolve(res);
+                } catch (err) {
+                    if (nextItem.noticeElem) nextItem.noticeElem.style.display = 'none';
+                    nextItem.reject(err);
+                } finally {
+                    this.processNext();
+                }
+            }
+        }
+        const globalHonestQueue = new HonestQueue();
+
+        async function fetchWithAutoRetry(url, options, maxRetries = 2, delayMs = 3000, statusElem = null) {
+            let attempt = 0;
+            while (attempt <= maxRetries) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return response;
+                    if (response.status >= 500 && attempt < maxRetries) {
+                        throw new Error(`Server status ${response.status}`);
+                    }
+                    return response;
+                } catch (err) {
+                    attempt++;
+                    if (attempt > maxRetries) throw err;
+                    if (statusElem) {
+                        statusElem.style.display = 'block';
+                        statusElem.innerHTML = `<i class="fa-solid fa-rotate fa-spin"></i> ضغط في الخادم، جاري إعادة المحاولة تلقائياً بعد 3 ثوانٍ (محاولة ${attempt} من ${maxRetries})...`;
+                    }
+                    await new Promise(r => setTimeout(r, delayMs));
+                }
+            }
+        }
+
+        function switchSystem(sys) {
+            document.getElementById('btnToggleOld').classList.remove('active');
+            document.getElementById('btnToggleNew').classList.remove('active');
+            document.getElementById('btnToggleRegister').classList.remove('active');
+
+            document.getElementById('loginWrapperOld').style.display = 'none';
+            document.getElementById('loginWrapperNew').style.display = 'none';
+            document.getElementById('loginWrapperRegister').style.display = 'none';
+
+            if (sys === 'old') {
+                document.getElementById('btnToggleOld').classList.add('active');
+                document.getElementById('loginWrapperOld').style.display = 'flex';
+                initProgressiveCaptcha('old');
+            } else if (sys === 'new') {
+                document.getElementById('btnToggleNew').classList.add('active');
+                document.getElementById('loginWrapperNew').style.display = 'flex';
+                initProgressiveCaptcha('new');
+            } else if (sys === 'register') {
+                document.getElementById('btnToggleRegister').classList.add('active');
+                document.getElementById('loginWrapperRegister').style.display = 'flex';
+                initProgressiveCaptcha('reg');
+            }
+        }
 
         let activeCallback = null;
-        function show3DDialog(type, title, message, btnText, callback = null) {
+        function show3DDialog(type, title, message, btnText = "حسناً", callback = null) {
             const modal = document.getElementById('dynamic3DModal');
             document.getElementById('modalIcon').innerText = type === 'success' ? '✅' : (type === 'warning' ? '⚠️' : '🚫');
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('modalMessage').innerText = message;
-            document.getElementById('modalBtn').innerText = btnText || "حسناً";
+            document.getElementById('modalBtn').innerText = btnText;
             activeCallback = callback;
-            modal.classList.add('active');
+            document.getElementById('dynamic3DModal').classList.add('active');
         }
-
         function close3DDialog() {
             document.getElementById('dynamic3DModal').classList.remove('active');
             if (activeCallback) { activeCallback(); activeCallback = null; }
         }
+        function toggleFloatingChat() { document.getElementById('chatFloatingWindow').classList.toggle('active'); }
+        function switchDashboardPage(pageId) { document.querySelectorAll('.dashboard-page').forEach(p => p.classList.remove('active')); document.getElementById(pageId).classList.add('active'); }
 
-        function toggleFloatingChat() {
-            document.getElementById('chatFloatingWindow').classList.toggle('active');
+        const WORKER_API_URL = 'https://lingering-morning-1c34.hstudy3rd.workers.dev';
+        let dynamicSubjectsMap = {};
+        let globalStudentData = {};
+        let isChatLoggedIn = false;
+        let chatInterval = null;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetchWithAutoRetry(`${WORKER_API_URL}?action=getTakhsos`, { method: 'GET' }, 2, 3000);
+                if (res && res.ok) {
+                    const data = await res.json();
+                    if (data.takhsos) {
+                        dynamicSubjectsMap = data.takhsos;
+                        const select = document.getElementById('takhsosSelect');
+                        select.innerHTML = '<option value="">-- اضغط هنا لاختيار التخصص الأكاديمي --</option>';
+                        const names = { "physics": "الفيزياء", "chemistry": "الكيمياء", "mathematics": "الرياضيات", "computer_science": "علوم الحاسب", "biology": "علم الأحياء" };
+                        for (let key in dynamicSubjectsMap) {
+                            select.innerHTML += `<option value="${key}">${names[key] || key}</option>`;
+                        }
+                    }
+                }
+            } catch (e) { console.error("Error loading Takhasos:", e); }
+        });
+
+        function finishLoginAndShowDashboard(studentObj) {
+            document.getElementById('loginWrapperOld').style.display = 'none';
+            document.getElementById('loginWrapperNew').style.display = 'none';
+            document.getElementById('loginWrapperRegister').style.display = 'none';
+            document.getElementById('systemToggle').style.display = 'none';
+            
+            document.getElementById('profileName').innerText = studentObj.name;
+            document.getElementById('profilePhase').innerText = studentObj.phase;
+            document.getElementById('profileDep').innerText = studentObj.mainDep;
+            document.getElementById('profileFaculty').innerText = studentObj.faculty;
+            
+            document.getElementById('additionalDetails').innerText = `الرقم القومي: ${studentObj.natID}${studentObj.extraID ? ' | الكود الجامعي: ' + studentObj.extraID : ''}`;
+
+            globalStudentData = studentObj;
+            document.getElementById('unifiedDashboard').style.display = 'block';
+
+            document.querySelector('.live-chat-fab').style.display = 'flex'; 
+            isChatLoggedIn = true;
+            loadStudentChatHistory();
+            if (chatInterval) clearInterval(chatInterval);
+            chatInterval = setInterval(loadStudentChatHistory, 3000);
+
+            if (studentObj.subjects && studentObj.subjects.length > 0 && !studentObj.allowRelogin) {
+                renderStudentStatusReport(studentObj);
+            } else {
+                switchDashboardPage('portalPage');
+            }
         }
 
-        function showDashboard() {
-            document.getElementById('loginWrapper').style.display = 'none';
-            document.getElementById('dashboardContainer').style.display = 'block';
-            document.getElementById('dashboardContainer').classList.add('system-shake-enter');
-            switchDashboardPage('portalPage');
-        }
-
-        function switchDashboardPage(pageId) {
-            document.querySelectorAll('.dashboard-page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function logout() { location.reload(); }
-
-        async function fetchAndVerifyStudent() {
-            const id = document.getElementById('natID').value.trim();
-            const emailInput = document.getElementById('userEmail').value.trim().toLowerCase();
-            const submitBtn = document.getElementById('submitBtn');
-
-            if (!emailInput.endsWith('@science.aun.edu.eg')) {
-                show3DDialog('error', "بريد غير مقبول", "مسموح فقط بدخول الطلاب الحاملين لبريد كلية العلوم الرسمي:\n@science.aun.edu.eg");
-                return;
+        // ================= إنشاء حساب جديد =================
+        async function registerNewStudent() {
+            if (!isCaptchaSolved('reg')) {
+                return show3DDialog('warning', "التحقق غير مكتمل", "يرجى كتابة رمز الكابتشا كاملاً (6 أرقام بالترتيب) للمتابعة.");
             }
 
-            if (id.length !== 14 || isNaN(id)) {
-                show3DDialog('warning', "تنبيه", "تأكد من كتابة الرقم القومي صحيحاً (14 رقم).");
-                return;
-            }
+            const name = document.getElementById('regName').value.trim();
+            const natID = document.getElementById('regNatID').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const faculty = document.getElementById('regFaculty').value.trim() || "كلية العلوم (جامعة أسيوط)";
+            const phase = document.getElementById('regPhase').value.trim();
+            const extraID = document.getElementById('regExtraID').value.trim() || natID;
+            const submitBtn = document.getElementById('submitBtnRegister');
+            const loader = document.getElementById('inlineCardLoaderRegister');
+            const queueNotice = document.getElementById('queueNoticeReg');
 
-            showCardLoader("جاري التحقق من السجلات والتحقق من الصلاحيات...");
+            if (!name) return show3DDialog('warning', "تنبيه", "يرجى كتابة الاسم ثلاثي أو رباعي بالكامل.");
+            if (natID.length !== 14 || isNaN(natID)) return show3DDialog('warning', "تنبيه", "الرقم القومي يجب أن يتكون من 14 رقماً صحيحاً.");
+            if (!email || !email.includes('@')) return show3DDialog('warning', "تنبيه", "يرجى كتابة بريد إلكتروني صالح.");
+            if (!phase) return show3DDialog('warning', "تنبيه", "يرجى إدخال التخصص / الشعبة الأكاديمية.");
+
+            loader.style.display = 'block';
+            loader.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري فحص السجلات والتأكد من عدم تكرار البيانات...`;
             submitBtn.disabled = true;
 
             try {
-                const checkRes = await fetch(WORKER_API_URL, {
+                const checkRes = await fetchWithAutoRetry(WORKER_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'studentCheckStatus', natID: id, email: emailInput })
-                });
+                    body: JSON.stringify({ action: 'studentCheckStatus', natID: natID, email: email })
+                }, 2, 3000, loader);
 
-                let existing = null;
-                if (checkRes.ok) {
-                    const checkJson = await checkRes.json();
-                    existing = checkJson.student;
-
-                    if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin && !existing.newlogin) {
-                        hideCardLoader();
+                if (checkRes && checkRes.ok) {
+                    const checkData = await checkRes.json();
+                    if (checkData.student) {
+                        loader.style.display = 'none';
                         submitBtn.disabled = false;
-                        show3DDialog('warning', "مرحباً بك", `مرحباً بك ${existing.name}!\nيمكنك متابعة حالة القبول والدردشة مع الإدارة.`);
-                        globalStudentData = existing;
-                        showDashboard();
-                        renderStudentStatusReport(existing);
-                        return;
+                        initProgressiveCaptcha('reg');
+                        return show3DDialog('error', "الحساب مسجل مسبقاً 🚫", `عذراً! هذا الرقم القومي (${natID}) أو البريد الإلكتروني مسجل بالفعل باسم (${checkData.student.name || 'طالب مسجل'}). لا يمكن إنشاء حساب مكرر.`);
                     }
                 }
 
-                // الاستعلام من الخادم الجامعي
-                const fetchUrl = 'https://script.google.com/macros/s/AKfycbxM2b90KnezzLOvP2L9NkQH9OAhZw_2aItK6vExxyQcmOlqo3buq4R6q-0_9gnBE-c_/exec';
-                const response = await fetch(`${fetchUrl}?id=${id}`);
-                const htmlText = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
+                const newStudentData = {
+                    natID: natID,
+                    email: email,
+                    name: name,
+                    faculty: faculty,
+                    phase: phase,
+                    mainDep: phase,
+                    extraID: extraID,
+                    customDetails: `الرقم القومي: ${natID}`,
+                    takhsos: phase,
+                    subjects: "",
+                    status: "pending",
+                    subjectStatuses: {}
+                };
 
-                const mapping = [
-                    { id: 'UserName', label: 'الاسم' }, { id: 'TextBox1', label: 'الكود' },
-                    { id: 'UserEmail', label: 'البريد' }, { id: 'UserPhoneNumber', label: 'الهاتف' },
-                    { id: 'ddlFaculty', label: 'الكلية' }, { id: 'DDLPhases', label: 'المرحلة' },
-                    { id: 'DDLDep', label: 'القسم' }
-                ];
+                await globalHonestQueue.add(async () => {
+                    const res = await fetchWithAutoRetry(WORKER_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'studentSubmitRegistration', studentData: newStudentData })
+                    }, 2, 3000, loader);
 
-                let fetchedData = {};
-                let isFound = false;
+                    const result = await res.json();
+                    loader.style.display = 'none';
+                    submitBtn.disabled = false;
 
-                mapping.forEach(field => {
-                    const el = doc.querySelector(`[id*="${field.id}"]`);
-                    if (el) {
-                        let val = el.tagName === 'SELECT' ? el.options[el.selectedIndex]?.text : (el.value || el.textContent || el.innerText);
-                        if (val && val.trim() !== "0" && !val.includes("--اختر")) {
-                            isFound = true;
-                            fetchedData[field.id] = val.trim();
-                        }
+                    if (res.ok && result.success) {
+                        show3DDialog('success', "تم إنشاء الحساب بنجاح! 🎉", "تم حفظ بياناتك بنجاح. تم نسخ الرقم القومي والبريد تلقائياً إلى صفحة تسجيل المقررات الأساسي، اضغط على زر 'استعلام ودخول' للمتابعة.", "موافق", () => {
+                            switchSystem('old');
+                            document.getElementById('natID').value = natID;
+                            document.getElementById('userEmail').value = email;
+                            document.getElementById('submitBtnOld').focus();
+                        });
+                    } else {
+                        initProgressiveCaptcha('reg');
+                        show3DDialog('error', "فشل إنشاء الحساب", result.error || "تعذر حفظ بيانات الحساب في السيرفر.");
                     }
-                });
+                }, queueNotice);
 
-                if (!isFound && !existing) {
-                    hideCardLoader();
-                    submitBtn.disabled = false;
-                    show3DDialog('error', "عذراً", "لا يوجد سجل مسجل بهذا الرقم القومي.");
-                    return;
-                }
-
-                const dbEmail = fetchedData['UserEmail'] ? fetchedData['UserEmail'].toLowerCase() : (existing ? existing.email : "");
-
-                if (dbEmail === emailInput) {
-                    let facultyVal = fetchedData['ddlFaculty'] || (existing ? existing.faculty : 'كلية العلوم');
-                    globalStudentData = {
-                        natID: id,
-                        email: dbEmail,
-                        name: fetchedData['UserName'] || (existing ? existing.name : 'غير مسجل'),
-                        faculty: facultyVal,
-                        phase: fetchedData['DDLPhases'] || (existing ? existing.phase : 'غير محددة'),
-                        mainDep: fetchedData['DDLDep'] || (existing ? existing.mainDep : 'غير محدد'),
-                        extraID: fetchedData['TextBox1'] || (existing ? existing.extraID : id)
-                    };
-
-                    document.getElementById('profileName').innerText = globalStudentData.name;
-                    document.getElementById('profilePhase').innerText = globalStudentData.phase;
-                    document.getElementById('profileDep').innerText = globalStudentData.mainDep;
-                    document.getElementById('profileFaculty').innerText = globalStudentData.faculty;
-
-                    document.getElementById('additionalDetails').innerText =
-                        `الهاتف: ${fetchedData['UserPhoneNumber'] || '-'} | الكود الجامعي: ${globalStudentData.extraID}`;
-
-                    hideCardLoader();
-                    submitBtn.disabled = false;
-                    showDashboard();
-                } else {
-                    hideCardLoader();
-                    submitBtn.disabled = false;
-                    show3DDialog('error', "خطأ أمني", "البريد الإلكتروني المدخل لا يتطابق مع المسجل بالكلية.");
-                }
-            } catch (error) {
-                hideCardLoader();
+            } catch (e) {
+                loader.style.display = 'none';
                 submitBtn.disabled = false;
-                show3DDialog('error', "خطأ اتصال", "فشل الاتصال بخادم الجامعة.");
+                initProgressiveCaptcha('reg');
+                show3DDialog('error', "خطأ اتصال", "فشل الاتصال بالسيرفر بعد عدة محاولات: " + e.message);
             }
         }
 
-        function proceedToSubjects() {
-            const selElement = document.getElementById('takhsosSelect');
-            const selectedTakhsosKey = selElement.value;
-            const selectedTakhsosText = selElement.options[selElement.selectedIndex].text;
-            const extraID = document.getElementById('studentExtraID').value.trim() || globalStudentData.extraID || globalStudentData.natID;
-
-            if (!selectedTakhsosKey) {
-                show3DDialog('warning', "بيانات مطلوبة", "يرجى تحديد التخصص الأكاديمي أولاً.");
-                return;
+        // ================= النظام الأول: تسجيل المقررات =================
+        async function fetchAndVerifyStudent() {
+            if (!isCaptchaSolved('old')) {
+                return show3DDialog('warning', "التحقق غير مكتمل", "يرجى كتابة رمز الكابتشا كاملاً (6 أرقام بالترتيب) للمتابعة.");
             }
 
-            globalStudentData.takhsos = selectedTakhsosText;
-            globalStudentData.extraID = extraID;
+            const id = document.getElementById('natID').value.trim();
+            const emailInput = document.getElementById('userEmail').value.trim().toLowerCase();
+            const submitBtn = document.getElementById('submitBtnOld');
+            const loader = document.getElementById('inlineCardLoaderOld');
+            const queueNotice = document.getElementById('queueNoticeOld');
+            
+            if (id.length !== 14 || isNaN(id)) return show3DDialog('warning', "تنبيه", "الرقم القومي يجب أن يتكون من 14 رقماً.");
+            if (!emailInput) return show3DDialog('warning', "تنبيه", "يرجى إدخال البريد الإلكتروني.");
 
-            // إصلاح وتعبئة التخصص والـ ID بشكل واضح
+            loader.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                await globalHonestQueue.add(async () => {
+                    let existingStudent = null;
+
+                    try {
+                        const checkRes = await fetchWithAutoRetry(WORKER_API_URL, { 
+                            method: 'POST', 
+                            headers: { 'Content-Type': 'application/json' }, 
+                            body: JSON.stringify({ action: 'studentCheckStatus', natID: id, email: emailInput }) 
+                        }, 2, 3000, loader);
+                        
+                        if (checkRes && checkRes.ok) {
+                            const checkJson = await checkRes.json();
+                            existingStudent = checkJson.student;
+
+                            if (existingStudent) {
+                                const dbEmail = (existingStudent.email || "").toLowerCase().trim();
+
+                                if (dbEmail && dbEmail !== emailInput) {
+                                    loader.style.display = 'none';
+                                    submitBtn.disabled = false;
+                                    initProgressiveCaptcha('old');
+                                    return show3DDialog('error', "خطأ أمني", "البريد الإلكتروني المدخل لا يتطابق مع المسجل في قاعدة البيانات.");
+                                }
+
+                                const studentObj = {
+                                    natID: id,
+                                    email: dbEmail || emailInput,
+                                    name: existingStudent.name || 'طالب كلية العلوم',
+                                    faculty: existingStudent.faculty || 'كلية العلوم',
+                                    phase: existingStudent.phase || 'غير محددة',
+                                    mainDep: existingStudent.mainDep || 'غير محدد',
+                                    extraID: existingStudent.extraID || id,
+                                    subjects: existingStudent.subjects || '',
+                                    subjectStatuses: existingStudent.subjectStatuses || {},
+                                    status: existingStudent.status || 'pending',
+                                    allowRelogin: existingStudent.allowRelogin || false,
+                                    customDetails: `الرقم القومي: ${id}`
+                                };
+
+                                if (existingStudent.subjects && existingStudent.subjects.length > 0 && !existingStudent.allowRelogin) {
+                                    show3DDialog('warning', "مرحباً بك", `مرحباً بك ${existingStudent.name}!\nيمكنك متابعة حالة القبول والدردشة.`);
+                                }
+
+                                loader.style.display = 'none';
+                                submitBtn.disabled = false;
+                                return finishLoginAndShowDashboard(studentObj);
+                            }
+                        }
+                    } catch (dbErr) {
+                        console.warn("DB lookup error, checking Google Script directly:", dbErr);
+                    }
+
+                    if (!emailInput.endsWith('@science.aun.edu.eg')) {
+                        loader.style.display = 'none';
+                        submitBtn.disabled = false;
+                        initProgressiveCaptcha('old');
+                        return show3DDialog('error', "بريد غير مقبول", "هذا الحساب غير مسجل بقاعدة البيانات. للبحث في خادم الكلية (Google Script) يجب استخدام بريد كلية العلوم الرسمي:\n@science.aun.edu.eg\nأو اضغط على 'إنشاء حساب جديد' لإضافة حسابك.");
+                    }
+
+                    const gRes = await fetchWithAutoRetry(WORKER_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'fetchGoogleScript', id: id })
+                    }, 2, 3000, loader);
+
+                    const gJson = await gRes.json();
+
+                    if (gJson.success && gJson.found) {
+                        const sData = gJson.data;
+                        const googleEmail = (sData.email || "").toLowerCase().trim();
+
+                        if (googleEmail === emailInput || !googleEmail) {
+                            const studentObj = {
+                                natID: id,
+                                email: googleEmail || emailInput,
+                                name: sData.name || 'طالب كلية العلوم',
+                                faculty: sData.faculty || 'كلية العلوم',
+                                phase: sData.phase || 'غير محددة',
+                                mainDep: sData.department || 'غير محدد',
+                                extraID: sData.code || id,
+                                customDetails: `الرقم القومي: ${id}`
+                            };
+                            loader.style.display = 'none';
+                            submitBtn.disabled = false;
+                            return finishLoginAndShowDashboard(studentObj);
+                        } else {
+                            loader.style.display = 'none';
+                            submitBtn.disabled = false;
+                            initProgressiveCaptcha('old');
+                            return show3DDialog('error', "خطأ أمني", `البريد الإلكتروني المدخل لا يتطابق مع المسجل بالكلية:\n(المسجل: ${googleEmail})`);
+                        }
+                    }
+
+                    loader.style.display = 'none';
+                    submitBtn.disabled = false;
+                    initProgressiveCaptcha('old');
+                    return show3DDialog('error', "عذراً", "لا يوجد سجل مسجل بهذا الرقم القومي في قاعدة البيانات ولا في خادم الجامعة (Google Script). يمكنك إنشاء حساب جديد أولاً.");
+                }, queueNotice);
+
+            } catch (error) {
+                loader.style.display = 'none';
+                submitBtn.disabled = false;
+                initProgressiveCaptcha('old');
+                show3DDialog('error', "خطأ اتصال", "فشل الاتصال بسيرفر التحقق بعد عدة محاولات.");
+            }
+        }
+
+        // ================= النظام الثاني: بوابة الطالب =================
+        async function loginNewSystem() {
+            if (!isCaptchaSolved('new')) {
+                return show3DDialog('warning', "التحقق غير مكتمل", "يرجى كتابة رمز الكابتشا كاملاً (6 أرقام بالترتيب) للمتابعة.");
+            }
+
+            const user = document.getElementById('newUsername').value.trim();
+            const pass = document.getElementById('newPassword').value;
+            const loader = document.getElementById('inlineCardLoaderNew');
+            const submitBtn = document.getElementById('submitBtnNew');
+            const queueNotice = document.getElementById('queueNoticeNew');
+            loader.style.display = 'block'; submitBtn.disabled = true;
+
+            try {
+                await globalHonestQueue.add(async () => {
+                    const response = await fetchWithAutoRetry(WORKER_API_URL, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify({ action: "studentHubScrape", username: user, password: pass }) 
+                    }, 2, 3000, loader);
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        let extractedNatID = user;
+                        let extractedPhase = "بيانات مستخرجة";
+                        if (data.headerInfo && data.headerInfo.length > 0) {
+                            data.headerInfo.forEach(info => {
+                                const natMatch = info.match(/\d{14}/);
+                                if (natMatch) extractedNatID = natMatch[0];
+                                if (info.includes("المستوي") || info.includes("الفرقة")) extractedPhase = info.substring(0, 30) + "..";
+                            });
+                        }
+
+                        const checkRes = await fetchWithAutoRetry(WORKER_API_URL, { 
+                            method: 'POST', 
+                            headers: { 'Content-Type': 'application/json' }, 
+                            body: JSON.stringify({ action: 'studentCheckStatus', natID: extractedNatID, email: user }) 
+                        }, 2, 3000, loader);
+                        
+                        let existing = null;
+                        if (checkRes && checkRes.ok) { 
+                            const checkJson = await checkRes.json(); 
+                            existing = checkJson.student; 
+                        }
+
+                        loader.style.display = 'none';
+                        submitBtn.disabled = false;
+
+                        if (existing && existing.subjects && existing.subjects.length > 0 && !existing.allowRelogin) {
+                            show3DDialog('warning', "مرحباً بك", `مرحباً بك ${existing.name}!\nيمكنك متابعة حالة القبول والدردشة.`);
+                            finishLoginAndShowDashboard(existing);
+                        } else {
+                            const studentObj = { 
+                                natID: extractedNatID, 
+                                email: user, 
+                                name: data.name || "طالب مستخرج", 
+                                faculty: "كلية العلوم (جامعة أسيوط)", 
+                                phase: extractedPhase, 
+                                mainDep: "عام", 
+                                extraID: extractedNatID, 
+                                customDetails: `الرقم القومي: ${extractedNatID}` 
+                            };
+                            finishLoginAndShowDashboard(studentObj);
+                        }
+                    } else { 
+                        loader.style.display = 'none';
+                        submitBtn.disabled = false;
+                        initProgressiveCaptcha('new');
+                        show3DDialog('error', "فشل الدخول", data.error || "تأكد من حساب الجامعة."); 
+                    }
+                }, queueNotice);
+            } catch (error) { 
+                loader.style.display = 'none'; 
+                submitBtn.disabled = false; 
+                initProgressiveCaptcha('new');
+                show3DDialog('error', "خطأ تقني", "حدث خطأ في الاتصال بخوادم الجامعة بعد عدة محاولات."); 
+            }
+        }
+
+        // ==============================================================
+        // 🌟 3. إنشاء بطاقات المقررات المتطورة وتفادي التعارض 🌟
+        // ==============================================================
+        function proceedToSubjects() {
+            const selElement = document.getElementById('takhsosSelect');
+            if (!selElement.value) return show3DDialog('warning', "بيانات مطلوبة", "يرجى تحديد التخصص الأكاديمي أولاً.");
+            globalStudentData.takhsos = selElement.options[selElement.selectedIndex].text;
+            globalStudentData.extraID = document.getElementById('studentExtraID').value.trim() || globalStudentData.extraID;
+            
             document.getElementById('displayTakhsos').innerText = globalStudentData.takhsos;
             document.getElementById('displayID').innerText = globalStudentData.extraID;
-
-            // تصفير العداد
             document.getElementById('currentHoursDisplay').innerText = "0";
             document.getElementById('hoursCounterBox').classList.remove('max-reached');
 
-            const container = document.getElementById('subjectsContainer');
+            const container = document.getElementById('subjectsContainer'); 
             container.innerHTML = '';
+            const subjects = dynamicSubjectsMap[selElement.value] || [];
 
-            const subjects = dynamicSubjectsMap[selectedTakhsosKey] || [];
+            if (subjects.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:25px; color:#888;">لا توجد مقررات دراسية مضافة لهذا التخصص حالياً.</div>';
+                switchDashboardPage('subjectPage');
+                return;
+            }
 
             subjects.forEach((sub) => {
-                const subText = typeof sub === 'string' ? sub : (sub.text || sub.name || sub.value);
-                const hoursNum = sub.hours ? parseInt(sub.hours) : 3; // افتراضياً 3 ساعات
-                const subHoursText = `${hoursNum} ساعات معتمدة`;
-                
-                let timesHTML = '';
-                if (sub.schedules && Array.isArray(sub.schedules)) {
-                    timesHTML = sub.schedules.map(s => `<span>📅 ${s.day} (${s.time})</span>`).join('');
+                const subName = typeof sub === 'string' ? sub : (sub.text || sub.name || sub.value);
+                const hoursNum = sub.hours ? parseInt(sub.hours) : 3;
+
+                let schedules = [];
+                if (sub.schedules && Array.isArray(sub.schedules) && sub.schedules.length > 0) {
+                    schedules = sub.schedules;
                 } else if (sub.day || sub.time) {
-                    timesHTML = `<span>📅 ${sub.day || ''} ${sub.time || ''}</span>`;
+                    schedules = [{ day: sub.day || 'غير محدد', time: sub.time || 'غير محدد' }];
+                } else {
+                    schedules = [{ day: 'غير محدد', time: 'غير محدد' }];
                 }
 
-                const label = document.createElement('label');
-                label.className = 'custom-checkbox';
-                label.innerHTML = `
-                    <div style="display:flex; align-items:center;">
-                        <input type="checkbox" name="selectedSubjects" value="${subText}" data-hours="${hoursNum}" onchange="handleSubjectSelection(this)">
-                        <span class="checkmark"></span>
-                        <span style="font-weight:700; font-size:14.5px;">${subText}</span>
-                    </div>
-                    <div class="subject-meta">
-                        <span class="hours-badge">⏳ ${subHoursText}</span>
-                        ${timesHTML}
-                    </div>
-                `;
-                container.appendChild(label);
+                // بطاقة لكل موعد متاح
+                schedules.forEach((slot, slotIdx) => {
+                    const hasMultiple = schedules.length > 1;
+                    const slotTitle = hasMultiple ? ` (موعد ${slotIdx + 1})` : '';
+                    const fullDisplayName = `${subName}${slotTitle}`;
+                    const timeDisplay = `يوم ${slot.day} - ${slot.time}`;
+
+                    const label = document.createElement('label');
+                    label.className = 'custom-checkbox';
+                    label.innerHTML = `
+                        <!-- الجزء العلوي: اسم المقرر يمين + الساعات بجواره -->
+                        <div class="sub-card-top">
+                            <div class="sub-name-right">
+                                <input type="checkbox" 
+                                       name="selectedSubjects" 
+                                       value="${fullDisplayName}" 
+                                       data-base-name="${subName}"
+                                       data-hours="${hoursNum}" 
+                                       data-day="${slot.day}" 
+                                       data-time="${slot.time}" 
+                                       onchange="handleSubjectSelection(this)">
+                                <span class="checkmark"></span>
+                                <div style="display:flex; align-items:center;">
+                                    <span class="sub-name-text">${subName}</span>
+                                    ${hasMultiple ? `<span class="sub-slot-badge">موعد ${slotIdx + 1}</span>` : ''}
+                                </div>
+                            </div>
+                            <span class="sub-hours-badge">⏳ ${hoursNum} ساعات</span>
+                        </div>
+
+                        <!-- الجزء السفلي: موعد المحاضرة واليوم -->
+                        <div class="sub-card-bottom">
+                            <span class="time-pill-tag"><i class="fa-regular fa-clock"></i> 📅 ${timeDisplay}</span>
+                        </div>
+                    `;
+                    container.appendChild(label);
+                });
             });
 
             switchDashboardPage('subjectPage');
         }
 
-        // دالة فحص وتحديث الساعات المعتمدة عند الاختيار
-        function handleSubjectSelection(checkbox) {
+        // ==============================================================
+        // 🌟 4. خوارزمية فحص التقاطع وتعارض المواعيد المحسنة 100% 🌟
+        // ==============================================================
+        function handleSubjectSelection(changedBox) {
+            if (!changedBox) return;
+
+            // 1. إلغاء الموعد الآخر لنفس المادة تلقائياً
+            const baseName = changedBox.getAttribute('data-base-name');
+            if (changedBox.checked && baseName) {
+                document.querySelectorAll(`input[name="selectedSubjects"][data-base-name="${baseName}"]`).forEach(other => {
+                    if (other !== changedBox && other.checked) {
+                        other.checked = false;
+                    }
+                });
+            }
+
+            // 2. تطبيق خوارزمية تقاطع وتعارض المواعيد بدقة
             const conflictStatus = checkScheduleConflicts();
             if (conflictStatus.hasConflict) {
-                show3DDialog('error', "تعارض في أوقات المحاضرات ❌", `تعذر اختيار هذه المادة لوجود تداخل زمني بين:\n\n• ${conflictStatus.sub1}\n• ${conflictStatus.sub2}\n\nالتفاصيل: ${conflictStatus.details}`, "موافق");
-                checkbox.checked = false;
+                show3DDialog('error', "تعارض في أوقات المحاضرات ❌", `تعذر اختيار هذا الموعد لوجود تداخل زمني بين مقررين:\n\n• ${conflictStatus.sub1}\n• ${conflictStatus.sub2}\n\nالتفاصيل: ${conflictStatus.details}`);
+                changedBox.checked = false;
                 updateTotalHours();
                 return;
             }
 
+            // 3. التحقق من الحد الأقصى 19 ساعة
             const totalHours = updateTotalHours();
             if (totalHours > 19) {
-                show3DDialog('warning', "تجاوز الحد الأقصى 🚫", "الحد الأقصى المسموح به هو 19 ساعة معتمدة في الفصل الدراسي الواحد.", "موافق");
-                checkbox.checked = false;
+                show3DDialog('warning', "تجاوز الحد الأقصى 🚫", "الحد الأقصى المسموح به هو 19 ساعة معتمدة في الفصل الدراسي الواحد.");
+                changedBox.checked = false;
                 updateTotalHours();
             }
         }
 
         function updateTotalHours() {
             const checkedBoxes = document.querySelectorAll('input[name="selectedSubjects"]:checked');
-            let total = 0;
-            checkedBoxes.forEach(cb => {
-                total += parseInt(cb.getAttribute('data-hours')) || 0;
-            });
+            let total = 0; 
+            checkedBoxes.forEach(cb => total += parseInt(cb.getAttribute('data-hours')) || 0);
             
             const display = document.getElementById('currentHoursDisplay');
             const box = document.getElementById('hoursCounterBox');
-            
             display.innerText = total;
             
             if (total >= 19) {
-                box.classList.add('max-reached');
-            } else {
-                box.classList.remove('max-reached');
+                box.classList.add('max-reached'); 
+            } else { 
+                box.classList.remove('max-reached'); 
             }
             return total;
         }
 
-        function checkScheduleConflicts() {
-            const checkedBoxes = document.querySelectorAll('input[name="selectedSubjects"]:checked');
-            const selectedSubs = [];
+        // توحيد نصوص الأيام لمنع مشاكل الهمزات والمسافات (الأحد/الاحد، الإثنين/الاثنين)
+        function normalizeDay(dayStr) {
+            if (!dayStr) return '';
+            return dayStr
+                .replace(/يوم\s*/g, '')
+                .replace(/[إأآا]/g, 'ا') // توحيد الألف
+                .replace(/\s+/g, '')
+                .trim();
+        }
 
-            checkedBoxes.forEach(cb => {
-                const subName = cb.value;
-                for (let key in dynamicSubjectsMap) {
-                    const subObj = dynamicSubjectsMap[key].find(s => (s.text || s.name || s) === subName);
-                    if (subObj) {
-                        selectedSubs.push({
-                            name: subName,
-                            day: subObj.day || '',
-                            timeStr: subObj.time || ''
-                        });
-                        break;
-                    }
-                }
-            });
+        // تحويل أي صيغة وقت إلى دقائق من بداية اليوم بدقة 100%
+        function parseTimeToMinutes(str) {
+            if (!str || str.includes('غير محدد')) return null;
 
-            function parseTimeSpan(str) {
-                if (!str) return null;
-                const matches = str.match(/\d+/g);
-                if (matches && matches.length >= 2) {
-                    let start = parseInt(matches[0]);
-                    let end = parseInt(matches[1]);
-                    const isPM = str.includes("م") || str.includes("مساءً") || str.includes("ظهراً") || str.includes("عصراً");
-                    if (isPM) {
-                        if (start < 12) start += 12;
-                        if (end < 12) end += 12;
-                    }
-                    return { start, end };
-                }
+            let s = str.replace(/من\s*/g, '').replace(/الساعة\s*/g, '').trim();
+            let parts = [];
+            if (s.includes("إلى")) {
+                parts = s.split("إلى");
+            } else if (s.includes("-")) {
+                parts = s.split("-");
+            } else {
                 return null;
             }
 
-            for (let i = 0; i < selectedSubs.length; i++) {
-                for (let j = i + 1; j < selectedSubs.length; j++) {
-                    const sub1 = selectedSubs[i];
-                    const sub2 = selectedSubs[j];
+            if (parts.length < 2) return null;
 
-                    if (sub1.day && sub2.day && sub1.day === sub2.day) {
-                        const time1 = parseTimeSpan(sub1.timeStr);
-                        const time2 = parseTimeSpan(sub2.timeStr);
+            function parseSingleTime(p, contextStr) {
+                p = p.trim();
+                const match = p.match(/(\d{1,2})(?::(\d{1,2}))?/);
+                if (!match) return null;
+                let h = parseInt(match[1]);
+                let m = match[2] ? parseInt(match[2]) : 0;
 
-                        if (time1 && time2) {
-                            const maxStart = Math.max(time1.start, time2.start);
-                            const minEnd = Math.min(time1.end, time2.end);
+                const hasPM = p.includes("م") || p.includes("مساء") || p.includes("عصر") || p.includes("ظهر");
+                const hasAM = p.includes("ص") || p.includes("صباح");
 
+                let isPM = hasPM;
+                let isAM = hasAM;
+
+                // استنتاج الفترة إن لم تكن مكتوبة في الجزء الأول
+                if (!hasPM && !hasAM) {
+                    const ctxPM = contextStr.includes("م") || contextStr.includes("مساء");
+                    const ctxAM = contextStr.includes("ص") || contextStr.includes("صباح");
+                    if (ctxPM && !ctxAM) isPM = true;
+                    else if (ctxAM && !ctxPM) isAM = true;
+                    else {
+                        // أوقات الجامعة: من 1 إلى 7 تكون بعد الظهر، من 8 إلى 11 صباحاً، 12 ظهراً
+                        if (h >= 1 && h <= 7) isPM = true;
+                        else if (h === 12) isPM = true;
+                        else if (h >= 8 && h <= 11) isAM = true;
+                    }
+                }
+
+                if (isPM && h < 12) h += 12;
+                if (isAM && h === 12) h = 0;
+
+                return h * 60 + m;
+            }
+
+            let start = parseSingleTime(parts[0], str);
+            let end = parseSingleTime(parts[1], str);
+
+            if (start === null || end === null) return null;
+
+            // إذا كان وقت البداية أكبر من النهاية (ترتيب مقلوب) يتم التبديل
+            if (start > end) {
+                const temp = start;
+                start = end;
+                end = temp;
+            }
+
+            return { start, end };
+        }
+
+        // فحص التعارض الفعلي
+        function checkScheduleConflicts() {
+            const checkedBoxes = Array.from(document.querySelectorAll('input[name="selectedSubjects"]:checked'));
+            const selectedItems = checkedBoxes.map(cb => ({
+                fullName: cb.value,
+                baseName: cb.getAttribute('data-base-name') || cb.value,
+                day: (cb.getAttribute('data-day') || '').trim(),
+                timeStr: (cb.getAttribute('data-time') || '').trim()
+            }));
+
+            for (let i = 0; i < selectedItems.length; i++) {
+                for (let j = i + 1; j < selectedItems.length; j++) {
+                    const item1 = selectedItems[i];
+                    const item2 = selectedItems[j];
+
+                    const normDay1 = normalizeDay(item1.day);
+                    const normDay2 = normalizeDay(item2.day);
+
+                    // فحص إذا كان المقررين في نفس اليوم
+                    if (normDay1 && normDay2 && normDay1 !== 'غيرمحدد' && normDay1 === normDay2) {
+                        const t1 = parseTimeToMinutes(item1.timeStr);
+                        const t2 = parseTimeToMinutes(item2.timeStr);
+
+                        if (t1 && t2) {
+                            const maxStart = Math.max(t1.start, t2.start);
+                            const minEnd = Math.min(t1.end, t2.end);
+
+                            // تداخل زمني فعلي
                             if (maxStart < minEnd) {
                                 return {
                                     hasConflict: true,
-                                    sub1: sub1.name,
-                                    sub2: sub2.name,
-                                    details: `يوم ${sub1.day} (${sub1.timeStr} متعارض مع ${sub2.timeStr})`
+                                    sub1: item1.fullName,
+                                    sub2: item2.fullName,
+                                    details: `يوم ${item1.day}: تعارض بين موعد (${item1.timeStr}) وموعد (${item2.timeStr})`
                                 };
                             }
                         }
@@ -1339,173 +1560,153 @@
             return { hasConflict: false };
         }
 
+        // ================= حفظ التسجيل وتخزين تفاصيل البطاقات =================
         async function saveFinalRegistration() {
             const checked = document.querySelectorAll('input[name="selectedSubjects"]:checked');
-            if (checked.length === 0) {
-                show3DDialog('warning', "تنبيه", "يجب اختيار مادة واحدة على الأقل للاستمرار.");
-                return;
-            }
-
+            if (checked.length === 0) return show3DDialog('warning', "تنبيه", "اختر مادة واحدة على الأقل للاستمرار.");
+            
             const selectedList = Array.from(checked).map(cb => cb.value);
+            
+            // حفظ تفاصيل البطاقات الكاملة (الساعات والمواعيد) لعرضها لاحقاً بنفس الهيئة
+            const subjectCardsData = Array.from(checked).map(cb => ({
+                fullName: cb.value,
+                baseName: cb.getAttribute('data-base-name') || cb.value,
+                hours: cb.getAttribute('data-hours') || '3',
+                day: cb.getAttribute('data-day') || 'غير محدد',
+                time: cb.getAttribute('data-time') || 'غير محدد'
+            }));
+
             globalStudentData.subjects = selectedList.join(' ، ');
-            globalStudentData.status = 'pending';
+            globalStudentData.subjectCardsData = subjectCardsData;
+            globalStudentData.status = 'pending'; 
             globalStudentData.subjectStatuses = {};
             selectedList.forEach(s => globalStudentData.subjectStatuses[s] = 'pending');
 
-            showCardLoader("جاري حفظ مقرراتك واعتمادها...");
-
+            show3DDialog('warning', 'جاري الحفظ', 'يتم حفظ مقرراتك في السيرفر وتنظيم طابور الطلبات...');
             try {
-                const updateRes = await fetch(WORKER_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'studentSubmitRegistration', studentData: globalStudentData })
+                await globalHonestQueue.add(async () => {
+                    const res = await fetchWithAutoRetry(WORKER_API_URL, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify({ action: 'studentSubmitRegistration', studentData: globalStudentData }) 
+                    }, 2, 3000);
+                    const result = await res.json();
+                    close3DDialog();
+                    if (res.ok && result.success) {
+                        show3DDialog('success', "نجاح", "تم التسجيل وتثبيت المواد بنجاح!", "موافق", () => renderStudentStatusReport(globalStudentData));
+                    } else {
+                        show3DDialog('error', "خطأ أثناء الحفظ", result.error || "تعذر حفظ المقررات في السيرفر.");
+                    }
                 });
-
-                hideCardLoader();
-                if (updateRes.ok) {
-                    show3DDialog('success', "تم التسجيل بنجاح! 🎉", `تم تثبيت المواد للطالب ${globalStudentData.name}`, "موافق", () => {
-                        renderStudentStatusReport(globalStudentData);
-                    });
-                }
-            } catch (e) {
-                hideCardLoader();
-                show3DDialog('error', "خطأ", "تعذر حفظ المقررات في السيرفر.");
+            } catch (e) { 
+                close3DDialog(); 
+                show3DDialog('error', "خطأ اتصال", "فشل الاتصال بالسيرفر بعد عدة محاولات: " + e.message); 
             }
         }
 
+        // ==============================================================
+        // 🌟 5. عرض المقررات وحالة القبول بتصميم البطاقات المتكامل 🌟
+        // ==============================================================
         function renderStudentStatusReport(studentObj) {
             document.getElementById('selectionSection').style.display = 'none';
-            const card = document.getElementById('statusReportCard');
-            card.style.display = 'block';
-
+            document.getElementById('statusReportCard').style.display = 'block';
             document.getElementById('reportStudentName').innerText = studentObj.name;
             document.getElementById('reportStudentID').innerText = studentObj.extraID || studentObj.natID;
             document.getElementById('reportStudentTakhsos').innerText = studentObj.takhsos || '--';
 
             const overallTag = document.getElementById('reportOverallStatus');
-            if (studentObj.status === 'accepted') {
-                overallTag.className = 'double-check-badge'; 
-                overallTag.innerHTML = 'مقبول ✔✔';
-            } else if (studentObj.status === 'rejected') {
-                overallTag.className = 'double-check-badge rejected'; 
-                overallTag.innerHTML = 'مرفوض ✖';
-            } else {
-                overallTag.className = 'double-check-badge pending'; 
-                overallTag.innerHTML = 'قيد المراجعة ⏳';
-            }
+            if (studentObj.status === 'accepted') { overallTag.className = 'double-check-badge'; overallTag.innerHTML = 'مقبول ✔✔'; }
+            else if (studentObj.status === 'rejected') { overallTag.className = 'double-check-badge rejected'; overallTag.innerHTML = 'مرفوض ✖'; }
+            else { overallTag.className = 'double-check-badge pending'; overallTag.innerHTML = 'قيد المراجعة ⏳'; }
 
-            const listContainer = document.getElementById('reportSubjectsList');
+            const listContainer = document.getElementById('reportSubjectsList'); 
             listContainer.innerHTML = '';
-
+            
             const subsList = studentObj.subjects ? studentObj.subjects.split(' ، ') : [];
             const statuses = studentObj.subjectStatuses || {};
+            const cardsData = studentObj.subjectCardsData || [];
 
             subsList.forEach(sub => {
                 const st = statuses[sub] || studentObj.status || 'pending';
                 let badgeHTML = '<span class="double-check-badge pending">قيد المراجعة ⏳</span>';
+                if (st === 'accepted') badgeHTML = '<span class="double-check-badge">مقبول ✔✔</span>';
+                else if (st === 'rejected') badgeHTML = '<span class="double-check-badge rejected">مرفوض ✖</span>';
 
-                if (st === 'accepted') {
-                    badgeHTML = '<span class="double-check-badge">مقبول ✔✔</span>';
-                } else if (st === 'rejected') {
-                    badgeHTML = '<span class="double-check-badge rejected">غير مقبول ✖</span>';
+                // البحث عن الساعات والمواعيد المحفوظة للمقرر
+                let matchedCard = cardsData.find(c => c.fullName === sub);
+                let hoursNum = matchedCard ? matchedCard.hours : 3;
+                let dayStr = matchedCard ? matchedCard.day : 'غير محدد';
+                let timeStr = matchedCard ? matchedCard.time : 'غير محدد';
+
+                // محاولة استخراج بديلة من خريطة التخصصات إن لم تكن محفوظة مباشرة
+                if (!matchedCard) {
+                    for (let key in dynamicSubjectsMap) {
+                        const found = dynamicSubjectsMap[key].find(s => (s.text || s.name || s) === sub || sub.startsWith(s.text || s.name || s));
+                        if (found) {
+                            hoursNum = found.hours || 3;
+                            dayStr = found.day || 'غير محدد';
+                            timeStr = found.time || 'غير محدد';
+                            break;
+                        }
+                    }
                 }
 
-                const div = document.createElement('div');
-                div.className = 'subject-status-item';
-                div.innerHTML = `<span>${sub}</span>${badgeHTML}`;
-                listContainer.appendChild(div);
+                // عرض المقرر في التقرير كبطاقة كاملة أنيقة مطابقة لبطاقات الاختيار
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'report-subject-card';
+                cardDiv.innerHTML = `
+                    <div class="sub-card-top">
+                        <div class="sub-name-right">
+                            <span class="sub-name-text"><i class="fa-solid fa-book-bookmark text-primary"></i> ${sub}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="sub-hours-badge">⏳ ${hoursNum} ساعات</span>
+                            ${badgeHTML}
+                        </div>
+                    </div>
+                    <div class="sub-card-bottom">
+                        <span class="time-pill-tag"><i class="fa-regular fa-clock"></i> 📅 يوم ${dayStr} - ${timeStr}</span>
+                    </div>
+                `;
+                listContainer.appendChild(cardDiv);
             });
 
             switchDashboardPage('subjectPage');
         }
 
-        /* الدردشة المباشرة */
-        async function authenticateChatUser() {
-            const natID = document.getElementById('chatLoginNatID').value.trim();
-            const email = document.getElementById('chatLoginEmail').value.trim().toLowerCase();
-            const extraID = document.getElementById('chatLoginExtraID').value.trim();
-
-            if (!natID || !email) {
-                alert("يرجى ملء الرقم القومي والإيميل للدردشة!");
-                return;
-            }
-
-            try {
-                const checkRes = await fetch(WORKER_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'studentCheckStatus', natID, email })
-                });
-
-                if (checkRes.ok) {
-                    const json = await checkRes.json();
-                    if (json.student) {
-                        globalStudentData = json.student;
-                        isChatLoggedIn = true;
-                        document.getElementById('chatIsolatedPortal').style.display = 'none';
-                        document.getElementById('studentChatBodyFloat').style.display = 'flex';
-                        document.getElementById('studentChatFooterFloat').style.display = 'flex';
-
-                        loadStudentChatHistory();
-                        if (chatInterval) clearInterval(chatInterval);
-                        chatInterval = setInterval(loadStudentChatHistory, 2000);
-                    } else {
-                        alert("البيانات غير مطابقة!");
-                    }
-                }
-            } catch (e) {
-                alert("فشل الاتصال بالدردشة.");
-            }
-        }
-
+        // ================= الشات المباشر =================
         async function loadStudentChatHistory() {
             if (!isChatLoggedIn || !globalStudentData.natID) return;
             try {
-                const res = await fetch(WORKER_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'studentGetMyChat', natID: globalStudentData.natID })
-                });
-                if (res.ok) {
-                    const json = await res.json();
-                    renderStudentChatMessages(json.myChat || { messages: [] });
+                const res = await fetchWithAutoRetry(WORKER_API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ action: 'studentGetMyChat', natID: globalStudentData.natID }) 
+                }, 1, 3000);
+                if (res && res.ok) {
+                    const json = await res.json(); 
+                    const body = document.getElementById('studentChatBodyFloat'); 
+                    body.innerHTML = '';
+                    (json.myChat?.messages || []).forEach(msg => {
+                        body.innerHTML += `<div class="msg-bubble ${msg.sender === 'student' ? 'student' : 'admin'}"><div>${msg.text}</div><span style="font-size:10px; color:#888;">${msg.time || ''}</span></div>`;
+                    });
+                    body.scrollTop = body.scrollHeight;
                 }
             } catch (e) {}
         }
 
-        function renderStudentChatMessages(chatObj) {
-            const body = document.getElementById('studentChatBodyFloat');
-            body.innerHTML = '';
-            (chatObj.messages || []).forEach(msg => {
-                const div = document.createElement('div');
-                div.className = `msg-bubble ${msg.sender === 'student' ? 'student' : 'admin'}`;
-                div.innerHTML = `<div>${msg.text}</div><span style="font-size:10px; color:#888;">${msg.time || ''}</span>`;
-                body.appendChild(div);
-            });
-            body.scrollTop = body.scrollHeight;
-        }
-
         async function sendStudentMessage() {
-            const input = document.getElementById('studentChatInputFloat');
-            const text = input.value.trim();
+            const input = document.getElementById('studentChatInputFloat'); 
+            const text = input.value.trim(); 
             if (!text) return;
-
-            const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }); 
             input.value = '';
-
             try {
-                await fetch(WORKER_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'studentSendMessage',
-                        natID: globalStudentData.natID,
-                        studentName: globalStudentData.name,
-                        email: globalStudentData.email,
-                        extraID: globalStudentData.extraID || globalStudentData.natID,
-                        message: { sender: 'student', text, time: timeStr }
-                    })
-                });
+                await fetchWithAutoRetry(WORKER_API_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ action: 'studentSendMessage', natID: globalStudentData.natID, studentName: globalStudentData.name || "Student", message: { sender: 'student', text, time: timeStr } }) 
+                }, 2, 3000);
                 loadStudentChatHistory();
             } catch (e) {}
         }
